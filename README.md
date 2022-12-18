@@ -1,2 +1,2 @@
-# cross_chain_monitoring
-Flipside World Cup Cross Chain Monitoring Tool
+# Flipside Crypto Cross Chain Monitoring Tool
+This tool was originally created for the Flipside Crypto World Cup Tornament.
