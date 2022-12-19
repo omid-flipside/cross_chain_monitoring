@@ -1,33 +1,36 @@
-# Libraries
+# -------------------------------------------------- Libraries --------------------------------------------------
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
+import plotly.subplots as sp
+from PIL import Image
 
 # -------------------------------------------------- Data Sources --------------------------------------------------
+
+# Transactions
+transactions_overview = pd.read_csv('Data/transactions_overview.csv')
+transactions_daily = pd.read_csv('Data/transactions_daily.csv')
+
+# Transfers
+transfers_overview = pd.read_csv('Data/transfers_overview.csv')
+transfers_daily = pd.read_csv('Data/transfers_daily.csv')
+
+# Swaps
+swaps_overview = pd.read_csv('Data/swaps_overview.csv')
+swaps_daily = pd.read_csv('Data/swaps_daily.csv')
+
+# NFTs
+nfts_overview = pd.read_csv('Data/nfts_overview.csv')
+nfts_daily = pd.read_csv('Data/nfts_daily.csv')
+
 # st.cache(ttl=3600)
 # def get_date(data):
 #     if data == 'swaps':
 #         return pd.read_csv('data/Swaps.csv')
         # return pd.read_json('https://node-api.flipsidecrypto.com/api/v2/queries/14dc8c9f-9d45-439d-ac4e-46505d1a8298/data/latest')
 # raw_swaps = get_date('swaps')
-
-# Transactions Data
-transactions_overview = pd.read_csv('Data/transactions_overview.csv')
-transactions_daily = pd.read_csv('Data/transactions_daily.csv')
-
-# Transfers Data
-transfers_overview = pd.read_csv('Data/transfers_overview.csv')
-transfers_daily = pd.read_csv('Data/transfers_daily.csv')
-
-# NFTs Data
-nfts_overview = pd.read_csv('Data/nfts_overview.csv')
-nfts_daily = pd.read_csv('Data/nfts_daily.csv')
-
-# Swaps Data
-swaps_overview = pd.read_csv('Data/swaps_overview.csv')
-swaps_daily = pd.read_csv('Data/swaps_daily.csv')
 
 # raw_swaps = pd.read_csv('Data/Swaps.csv')
 # swaps_dexs_overview = raw_swaps.groupby(['Blockchain', 'DEX'], as_index=False).aggregate(
@@ -53,18 +56,73 @@ swaps_daily = pd.read_csv('Data/swaps_daily.csv')
 #     {'Swaps': 'sum', 'Swappers': 'sum', 'Volume': 'sum', 'AmountAverage': 'mean', 'AmountMedian': 'mean'})
 
 # -------------------------------------------------- Layout --------------------------------------------------
+
 st.set_page_config(page_title='Cross Chain Monitoring Tool', page_icon=':bar_chart:', layout='wide')
 st.title('Cross Chain Monitoring Tool')
 
-tab_overview, tab_transactions, tab_swaps, tab_transfers, tab_nfts = st.tabs(['Overview', 'Transactions', 'Swaps', 'Transfers', 'NFTs'])
-
-# print(swaps_assets_overview)
+tab_overview, tab_transactions, tab_transfers, tab_swaps, tab_nfts = st.tabs([
+    '**Overview**', '**Transactions**', '**Transfers**', '**Swaps**', '**NFTs**'])
 
 # -------------------------------------------------- Overview --------------------------------------------------
+
 with tab_overview:
+
+    c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15 = st.columns(15)
+    c1.image(Image.open('Images/ethereum-logo.png'))
+    c2.image(Image.open('Images/bsc-logo.png'))
+    c3.image(Image.open('Images/polygon-logo.png'))
+    c4.image(Image.open('Images/solana-logo.png'))
+    c5.image(Image.open('Images/avalanche-logo.png'))
+    c6.image(Image.open('Images/cosmos-logo.png'))
+    c7.image(Image.open('Images/algorand-logo.png'))
+    c8.image(Image.open('Images/near-logo.png'))
+    c9.image(Image.open('Images/flow-logo.png'))
+    c10.image(Image.open('Images/thorchain-logo.png'))
+    c11.image(Image.open('Images/osmosis-logo.png'))
+    c12.image(Image.open('Images/gnosis-logo.png'))
+    c13.image(Image.open('Images/optimism-logo.png'))
+    c14.image(Image.open('Images/arbitrum-logo.png'))
+    c15.image(Image.open('Images/axelar-logo.png'))
+
     st.write(
         """
-        This is the overview of this cross chain monitoring tool.
+        The crypto industry continues to progress regardless of the market condition and contributors of each
+        blockchain keep developing different segments of the industry and the whole crypto ecosystem.
+        This tool is designed to allow viewers to journey into the world of crypto ecosystems of some of the
+        major blockchains, and compare their performance.
+
+        This tool is designed and structured in multiple **Tabs**, which address a different segment of the crypto
+        industry. Within each segment (Transactions, Transfers, Swaps, and NFTs) you are able to filter your desired
+        blockchains to narrow/expand the comparison. By selecting a single blockchain, you are able to observe a
+        deep dive into that particular network.
+        """
+    )
+
+    st.subheader('Methodology')
+    st.write(
+        """
+        The data for this cross-chain comparison were selected from the [Flipside Crypto](https://flipsidecrypto.xyz/)
+        data platform and queried using the [Flipside ShroomDK](https://sdk.flipsidecrypto.xyz/shroomdk).
+        The results of these queries were saved into multiple CSV files in a
+        [GitHub Repository](https://github.com/alitslm/cross_chain_monitoring). The scripts are currently manually run
+        to both cover the recent data, as well as backfilling the previous ones.
+
+        While all the codes and queries are accessible through the GitHub repository mentioned above, the following
+        dashboards created using Flipside Crypto were used as the core references in developing the current tool.
+
+        - [Flipside World Cup: Gas Guzzlers](https://app.flipsidecrypto.com/dashboard/flipsides-world-cup-gas-guzzlers-iTcitG)
+        - [Flipside World Cup: USDC Transfers](https://app.flipsidecrypto.com/dashboard/flipside-world-cup-usdc-transfers-l-dWsf)
+        - [Flipside World Cup: NFT Sales](https://app.flipsidecrypto.com/dashboard/flipside-world-cup-nft-sales-lDvMLG)
+        - [Flipside World Cup: Cross Chain DeFi Monitoring](https://app.flipsidecrypto.com/dashboard/flipside-world-cup-cross-chain-de-fi-monitoring-bOY5ox)
+        """
+    )
+
+    st.subheader('Future Works')
+    st.write(
+        """
+        This tool is a work in progress and other blockchains/metrics are constantly being added to further facilitate
+        the comparison of different networks and segments with one another. Feel free to @ me on Twitter
+        ([@AliTslm](https://twitter.com/AliTslm)) to share your feedback, suggestions, and even critics with me.
         """
     )
 
@@ -89,8 +147,11 @@ with tab_transactions:
     filtered_transactions_daily = transactions_daily.query("Blockchain == @options")
 
     # Selected Blockchain
-    if len(options) == 1:
-        st.subheader(f"Overview")
+    if len(options) == 0:
+        st.warning('Please select at least one blockchain to see the metrics.')
+
+    elif len(options) == 1:
+        st.subheader('Overview')
 
         c1, c2, c3, c4, c5 = st.columns(5)
         with c1:
@@ -109,11 +170,11 @@ with tab_transactions:
             st.metric(label='FeeAverage', value=filtered_transactions_overview['FeeAverage'].round(2), help='USD')
             st.metric(label='FeeMedian', value=filtered_transactions_overview['FeeMedian'].round(2), help='USD')
 
-        st.subheader(f"Activity")
+        st.subheader('Activity')
 
         c1, c2 = st.columns(2)
         with c1:
-            fig = make_subplots(specs=[[{'secondary_y': True}]])
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
             fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Transactions'], name='Transactions'), secondary_y=False)
             fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Blocks'], name='Blocks'), secondary_y=True)
             fig.update_layout(title_text='Daily Total Transactions and Blocks')
@@ -121,7 +182,7 @@ with tab_transactions:
             fig.update_yaxes(title_text='Blocks', secondary_y=True)
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = make_subplots(specs=[[{'secondary_y': True}]])
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
             fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['TPS'], name='TPS'), secondary_y=False)
             fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Transactions/Block'], name='Transactions/Block'), secondary_y=True)
             fig.update_layout(title_text='Daily TPS and Transactions/Block')
@@ -133,7 +194,7 @@ with tab_transactions:
             fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = make_subplots(specs=[[{'secondary_y': True}]])
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
             fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Fees'], name='Total'), secondary_y=False)
             fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['FeeAverage'], name='Average'), secondary_y=True)
             fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['FeeMedian'], name='Median'), secondary_y=True)
@@ -184,6 +245,212 @@ with tab_transactions:
 
             fig = px.line(filtered_transactions_daily, x='Date', y='Fees', color='Blockchain', title='Daily Transaction Fees', log_y=True)
             fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+# -------------------------------------------------- Transfers --------------------------------------------------
+with tab_transfers:
+    st.write("""
+        Developed by Circle, USD Coin (USDC) is a faster, safer, and more efficient way to send, spend, and exchange money around the world. USDC supports apps that provide anytime access to payments and financial services.
+        USDC, also known as a stablecoin, is a digital dollar that is available 24/7 and travels at the speed of the internet.
+        USDC lives natively on the internet and runs on many of the world's most advanced blockchains.
+        Billions of USDC change hands every day, and every digital dollar of USDC can always be exchanged 1:1 for cash.
+        USDC is beyond border and bank business hours.
+        As a worldwide digital dollar, USDC is available whenever and wherever you need it.
+        It is easy to send USDC anywhere in the world, pay for goods and services, or save for the future.
+        Anyone with an internet connection can send, receive and store USDC.
+        Merchants can avoid associated credit card payment fees, benefit from immediate cash flow, and pass the savings on to their customers.
+        USDC unlocks opportunities in the virtual capital markets for trading, lending, borrowing, and financing.
+        Known as a fully reserved stablecoin, all USDC digital dollars on the web are always redeemable as they are backed by 100 percent cash and short-term U.S. treasuries, so it is always redeemable 1:1 for U.S. dollars.
+        The USDC Reserve is owned and managed by major US financial institutions such as BlackRock and BNY Mellon.
+        Each month, Grant Thornton LLP, one of the largest US accounting, tax, and advisory firms, provides independent verification of the size of USDC reserves.
+        Circle is regulated as a licensed money transfer provider under US federal law and its financial statements are audited annually and are subject to review by the SEC.
+        """)
+
+    # Filter the blockchains
+    options = st.multiselect(
+        'Select your desired blockchains:',
+        options=transfers_overview['Blockchain'].unique(),
+        default=transfers_overview['Blockchain'].unique()
+    )
+    filtered_transfers_overview = transfers_overview.query("Blockchain == @options")
+    filtered_transfers_daily = transfers_daily.query("Blockchain == @options")
+
+    # Selected Blockchain
+    if len(options) == 1:
+        st.subheader(f"Overview")
+
+        c1, c2, c3, c4, c5 = st.columns(5)
+        with c1:
+            st.metric(label='Blocks', value=filtered_transactions_overview['Blocks'])
+            st.metric(label='Transactions/Block', value=filtered_transactions_overview['Transactions/Block'].round(2))
+        with c2:
+            st.metric(label='Transactions', value=filtered_transactions_overview['Transactions'])
+            st.metric(label='TPS', value=filtered_transactions_overview['TPS'].round(2))
+        with c3:
+            st.metric(label='Users', value=filtered_transactions_overview['Users'])
+            st.metric(label='Users/Day', value=filtered_transactions_overview['Users/Day'].round())
+        with c4:
+            st.metric(label='Fees', value=filtered_transactions_overview['Fees'].round(), help='USD')
+            st.metric(label='Fees/Block', value=filtered_transactions_overview['Fees/Block'].round(2), help='USD')
+        with c5:
+            st.metric(label='FeeAverage', value=filtered_transactions_overview['FeeAverage'].round(2), help='USD')
+            st.metric(label='FeeMedian', value=filtered_transactions_overview['FeeMedian'].round(2), help='USD')
+
+        st.subheader(f"Activity")
+
+        c1, c2 = st.columns(2)
+        with c1:
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Transactions'], name='Transactions'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Blocks'], name='Blocks'), secondary_y=True)
+            fig.update_layout(title_text='Daily Total Transactions and Blocks')
+            fig.update_yaxes(title_text='Transactions', secondary_y=False)
+            fig.update_yaxes(title_text='Blocks', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['TPS'], name='TPS'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Transactions/Block'], name='Transactions/Block'), secondary_y=True)
+            fig.update_layout(title_text='Daily TPS and Transactions/Block')
+            fig.update_yaxes(title_text='TPS', secondary_y=False)
+            fig.update_yaxes(title_text='Transactions/Block', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            fig = px.area(filtered_transactions_daily, x='Date', y='Users', title='Daily Users')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Fees'], name='Total'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['FeeAverage'], name='Average'), secondary_y=True)
+            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['FeeMedian'], name='Median'), secondary_y=True)
+            fig.update_layout(title_text='Daily Total, Average, and Median Fees')
+            fig.update_yaxes(title_text='Total', secondary_y=False)
+            fig.update_yaxes(title_text='Average and Median', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+
+    # Cross Chain Comparison
+    else:
+        st.subheader("Overview")
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Volume', color='Blockchain', title='Total USDC Transferred Volume', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.pie(filtered_transfers_overview, values='Volume', names='Blockchain', title='Share of Total USDC Transferred Volume')
+            fig.update_layout(showlegend=False)
+            fig.update_traces(textinfo='percent+label', textposition='inside')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Volume/Day', color='Blockchain', title='Average USDC Transferred Volume/Day', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+        with c2:
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Transfers', color='Blockchain', title='Total USDC Transfers', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.pie(filtered_transfers_overview, values='Transfers', names='Blockchain', title='Share of Total USDC Transfers')
+            fig.update_layout(showlegend=False)
+            fig.update_traces(textinfo='percent+label', textposition='inside')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Transfers/Day', color='Blockchain', title='Average USDC Transfers/Day', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+        with c3:
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Users', color='Blockchain', title='Total USDC Transferring Users', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.pie(filtered_transfers_overview, values='Users', names='Blockchain', title='Share of Total USDC Transferring Users')
+            fig.update_layout(showlegend=False)
+            fig.update_traces(textinfo='percent+label', textposition='inside')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Users/Day', color='Blockchain', title='Average USDC Transferring Users/Day', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+        st.subheader("Transferred Amount")
+
+        c1, c2 = st.columns([1, 2])
+        with c1:
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='AmountAverage', color='Blockchain', title='Average Transferred Amount', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='AmountMedian', color='Blockchain', title='Median Transferred Amount', log_y=True)
+            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            st.plotly_chart(fig, use_container_width=True)
+
+        with c2:
+            fig = px.line(filtered_transfers_daily, x='Date', y='AmountAverage', color='Blockchain', title='Daily Average Transferred Amount')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.line(filtered_transfers_daily, x='Date', y='AmountMedian', color='Blockchain', title='Daily Median Transferred Amount')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+        
+        st.subheader("Transfers Over Time")
+
+        c1, c2 = st.columns(2)
+        with c1:
+            fig = px.line(filtered_transfers_daily, x='Date', y='Volume', color='Blockchain', title='Daily Transferred Volume')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.line(filtered_transfers_daily, x='Date', y='Transfers', color='Blockchain', title='Daily Transfers')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.line(filtered_transfers_daily, x='Date', y='Users', color='Blockchain', title='Daily Transferring Users')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+        with c2:
+            fig = go.Figure()
+            for i in options:
+                fig.add_trace(go.Scatter(
+                    name=i,
+                    x=filtered_transfers_daily.query("Blockchain == @i")['Date'],
+                    y=filtered_transfers_daily.query("Blockchain == @i")['Volume'],
+                    mode='lines',
+                    stackgroup='one',
+                    groupnorm='percent'
+                ))
+            fig.update_layout(title='Daily Share of Transferred Volume')
+            st.plotly_chart(fig, use_container_width=True)
+            
+            fig = go.Figure()
+            for i in options:
+                fig.add_trace(go.Scatter(
+                    name=i,
+                    x=filtered_transfers_daily.query("Blockchain == @i")['Date'],
+                    y=filtered_transfers_daily.query("Blockchain == @i")['Transfers'],
+                    mode='lines',
+                    stackgroup='one',
+                    groupnorm='percent'
+                ))
+            fig.update_layout(title='Daily Share of Transfers')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = go.Figure()
+            for i in options:
+                fig.add_trace(go.Scatter(
+                    name=i,
+                    x=filtered_transfers_daily.query("Blockchain == @i")['Date'],
+                    y=filtered_transfers_daily.query("Blockchain == @i")['Users'],
+                    mode='lines',
+                    stackgroup='one',
+                    groupnorm='percent'
+                ))
+            fig.update_layout(title='Daily Share of Transferring Users')
             st.plotly_chart(fig, use_container_width=True)
 
 # -------------------------------------------------- Swaps --------------------------------------------------
@@ -488,212 +755,6 @@ with tab_swaps:
     #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Swappers', color='Type', title='Share of Swappers of Each Asset Type', log_y=True, barnorm='percent')
     #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
     #         st.plotly_chart(fig, use_container_width=True)
-
-# -------------------------------------------------- Transfers --------------------------------------------------
-with tab_transfers:
-    st.write("""
-        Developed by Circle, USD Coin (USDC) is a faster, safer, and more efficient way to send, spend, and exchange money around the world. USDC supports apps that provide anytime access to payments and financial services.
-        USDC, also known as a stablecoin, is a digital dollar that is available 24/7 and travels at the speed of the internet.
-        USDC lives natively on the internet and runs on many of the world's most advanced blockchains.
-        Billions of USDC change hands every day, and every digital dollar of USDC can always be exchanged 1:1 for cash.
-        USDC is beyond border and bank business hours.
-        As a worldwide digital dollar, USDC is available whenever and wherever you need it.
-        It is easy to send USDC anywhere in the world, pay for goods and services, or save for the future.
-        Anyone with an internet connection can send, receive and store USDC.
-        Merchants can avoid associated credit card payment fees, benefit from immediate cash flow, and pass the savings on to their customers.
-        USDC unlocks opportunities in the virtual capital markets for trading, lending, borrowing, and financing.
-        Known as a fully reserved stablecoin, all USDC digital dollars on the web are always redeemable as they are backed by 100 percent cash and short-term U.S. treasuries, so it is always redeemable 1:1 for U.S. dollars.
-        The USDC Reserve is owned and managed by major US financial institutions such as BlackRock and BNY Mellon.
-        Each month, Grant Thornton LLP, one of the largest US accounting, tax, and advisory firms, provides independent verification of the size of USDC reserves.
-        Circle is regulated as a licensed money transfer provider under US federal law and its financial statements are audited annually and are subject to review by the SEC.
-        """)
-
-    # Filter the blockchains
-    options = st.multiselect(
-        'Select your desired blockchains:',
-        options=transfers_overview['Blockchain'].unique(),
-        default=transfers_overview['Blockchain'].unique()
-    )
-    filtered_transfers_overview = transfers_overview.query("Blockchain == @options")
-    filtered_transfers_daily = transfers_daily.query("Blockchain == @options")
-
-    # Selected Blockchain
-    if len(options) == 1:
-        st.subheader(f"Overview")
-
-        c1, c2, c3, c4, c5 = st.columns(5)
-        with c1:
-            st.metric(label='Blocks', value=filtered_transactions_overview['Blocks'])
-            st.metric(label='Transactions/Block', value=filtered_transactions_overview['Transactions/Block'].round(2))
-        with c2:
-            st.metric(label='Transactions', value=filtered_transactions_overview['Transactions'])
-            st.metric(label='TPS', value=filtered_transactions_overview['TPS'].round(2))
-        with c3:
-            st.metric(label='Users', value=filtered_transactions_overview['Users'])
-            st.metric(label='Users/Day', value=filtered_transactions_overview['Users/Day'].round())
-        with c4:
-            st.metric(label='Fees', value=filtered_transactions_overview['Fees'].round(), help='USD')
-            st.metric(label='Fees/Block', value=filtered_transactions_overview['Fees/Block'].round(2), help='USD')
-        with c5:
-            st.metric(label='FeeAverage', value=filtered_transactions_overview['FeeAverage'].round(2), help='USD')
-            st.metric(label='FeeMedian', value=filtered_transactions_overview['FeeMedian'].round(2), help='USD')
-
-        st.subheader(f"Activity")
-
-        c1, c2 = st.columns(2)
-        with c1:
-            fig = make_subplots(specs=[[{'secondary_y': True}]])
-            fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Transactions'], name='Transactions'), secondary_y=False)
-            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Blocks'], name='Blocks'), secondary_y=True)
-            fig.update_layout(title_text='Daily Total Transactions and Blocks')
-            fig.update_yaxes(title_text='Transactions', secondary_y=False)
-            fig.update_yaxes(title_text='Blocks', secondary_y=True)
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = make_subplots(specs=[[{'secondary_y': True}]])
-            fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['TPS'], name='TPS'), secondary_y=False)
-            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Transactions/Block'], name='Transactions/Block'), secondary_y=True)
-            fig.update_layout(title_text='Daily TPS and Transactions/Block')
-            fig.update_yaxes(title_text='TPS', secondary_y=False)
-            fig.update_yaxes(title_text='Transactions/Block', secondary_y=True)
-            st.plotly_chart(fig, use_container_width=True)
-        with c2:
-            fig = px.area(filtered_transactions_daily, x='Date', y='Users', title='Daily Users')
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = make_subplots(specs=[[{'secondary_y': True}]])
-            fig.add_trace(go.Bar(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['Fees'], name='Total'), secondary_y=False)
-            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['FeeAverage'], name='Average'), secondary_y=True)
-            fig.add_trace(go.Line(x=filtered_transactions_daily['Date'], y=filtered_transactions_daily['FeeMedian'], name='Median'), secondary_y=True)
-            fig.update_layout(title_text='Daily Total, Average, and Median Fees')
-            fig.update_yaxes(title_text='Total', secondary_y=False)
-            fig.update_yaxes(title_text='Average and Median', secondary_y=True)
-            st.plotly_chart(fig, use_container_width=True)
-
-    # Cross Chain Comparison
-    else:
-        st.subheader("Overview")
-
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Volume', color='Blockchain', title='Total USDC Transferred Volume', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.pie(filtered_transfers_overview, values='Volume', names='Blockchain', title='Share of Total USDC Transferred Volume')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Volume/Day', color='Blockchain', title='Average USDC Transferred Volume/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-        with c2:
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Transfers', color='Blockchain', title='Total USDC Transfers', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.pie(filtered_transfers_overview, values='Transfers', names='Blockchain', title='Share of Total USDC Transfers')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Transfers/Day', color='Blockchain', title='Average USDC Transfers/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-        with c3:
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Users', color='Blockchain', title='Total USDC Transferring Users', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.pie(filtered_transfers_overview, values='Users', names='Blockchain', title='Share of Total USDC Transferring Users')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='Users/Day', color='Blockchain', title='Average USDC Transferring Users/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-        st.subheader("Transferred Amount")
-
-        c1, c2 = st.columns([1, 2])
-        with c1:
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='AmountAverage', color='Blockchain', title='Average Transferred Amount', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.bar(filtered_transfers_overview, x='Blockchain', y='AmountMedian', color='Blockchain', title='Median Transferred Amount', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-        with c2:
-            fig = px.line(filtered_transfers_daily, x='Date', y='AmountAverage', color='Blockchain', title='Daily Average Transferred Amount')
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.line(filtered_transfers_daily, x='Date', y='AmountMedian', color='Blockchain', title='Daily Median Transferred Amount')
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
-        
-        st.subheader("Transfers Over Time")
-
-        c1, c2 = st.columns(2)
-        with c1:
-            fig = px.line(filtered_transfers_daily, x='Date', y='Volume', color='Blockchain', title='Daily Transferred Volume')
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.line(filtered_transfers_daily, x='Date', y='Transfers', color='Blockchain', title='Daily Transfers')
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.line(filtered_transfers_daily, x='Date', y='Users', color='Blockchain', title='Daily Transferring Users')
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
-
-        with c2:
-            fig = go.Figure()
-            for i in options:
-                fig.add_trace(go.Scatter(
-                    name=i,
-                    x=filtered_transfers_daily.query("Blockchain == @i")['Date'],
-                    y=filtered_transfers_daily.query("Blockchain == @i")['Volume'],
-                    mode='lines',
-                    stackgroup='one',
-                    groupnorm='percent'
-                ))
-            fig.update_layout(title='Daily Share of Transferred Volume')
-            st.plotly_chart(fig, use_container_width=True)
-            
-            fig = go.Figure()
-            for i in options:
-                fig.add_trace(go.Scatter(
-                    name=i,
-                    x=filtered_transfers_daily.query("Blockchain == @i")['Date'],
-                    y=filtered_transfers_daily.query("Blockchain == @i")['Transfers'],
-                    mode='lines',
-                    stackgroup='one',
-                    groupnorm='percent'
-                ))
-            fig.update_layout(title='Daily Share of Transfers')
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = go.Figure()
-            for i in options:
-                fig.add_trace(go.Scatter(
-                    name=i,
-                    x=filtered_transfers_daily.query("Blockchain == @i")['Date'],
-                    y=filtered_transfers_daily.query("Blockchain == @i")['Users'],
-                    mode='lines',
-                    stackgroup='one',
-                    groupnorm='percent'
-                ))
-            fig.update_layout(title='Daily Share of Transferring Users')
-            st.plotly_chart(fig, use_container_width=True)
 
 # -------------------------------------------------- NFTs --------------------------------------------------
 with tab_nfts:
