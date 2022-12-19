@@ -23,6 +23,11 @@ transfers_distribution = pd.read_csv('Data/transfers_distribution.csv')
 # Swaps
 swaps_overview = pd.read_csv('Data/swaps_overview.csv')
 swaps_daily = pd.read_csv('Data/swaps_daily.csv')
+swaps_heatmap = pd.read_csv('Data/swaps_heatmap.csv')
+swaps_dexs_overview = pd.read_csv('Data/swaps_dexs_overview.csv')
+swaps_dexs_daily = pd.read_csv('Data/swaps_dexs_daily.csv')
+swaps_types_overview = pd.read_csv('Data/swaps_types_overview.csv')
+swaps_types_daily = pd.read_csv('Data/swaps_types_daily.csv')
 
 # NFTs
 nfts_overview = pd.read_csv('Data/nfts_overview.csv')
@@ -390,7 +395,7 @@ with tab_transfers:
         st.warning('Please select at least one blockchain to see the metrics.')
 
     elif len(options) == 1:
-        st.subheader(f"Overview")
+        st.subheader('Overview')
 
         c1, c2, c3, c4 = st.columns(4)
         with c1:
@@ -404,9 +409,28 @@ with tab_transfers:
             st.metric(label='Users/Day', value=filtered_transfers_overview['Users/Day'].round())
         with c4:
             st.metric(label='Average Amount', value=filtered_transfers_overview['AmountAverage'].round(2), help='USD')
-            st.metric(label='MedianAmount', value=filtered_transfers_overview['AmountMedian'].round(2), help='USD')
+            st.metric(label='Median Amount', value=filtered_transfers_overview['AmountMedian'].round(2), help='USD')
 
-        st.subheader(f"Activity")
+        st.subheader('Distribution')
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            fig = px.pie(filtered_transfers_distribution, values='Volume', names='Bucket', title='Share of Total Transferred Volume')
+            fig.update_layout(showlegend=False)
+            fig.update_traces(textinfo='percent+label', textposition='inside')
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            fig = px.pie(filtered_transfers_distribution, values='Transfers', names='Bucket', title='Share of Total Transfers')
+            fig.update_layout(showlegend=False)
+            fig.update_traces(textinfo='percent+label', textposition='inside')
+            st.plotly_chart(fig, use_container_width=True)
+        with c3:
+            fig = px.pie(filtered_transfers_distribution, values='Users', names='Bucket', title='Share of Total Transferring Users')
+            fig.update_layout(showlegend=False)
+            fig.update_traces(textinfo='percent+label', textposition='inside')
+            st.plotly_chart(fig, use_container_width=True)
+
+        st.subheader('Activity')
 
         fig = px.area(filtered_transfers_daily, x='Date', y='Volume', title='Daily Transferred Volume')
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
@@ -437,13 +461,13 @@ with tab_transfers:
             fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='Volume', color='Volume', title='Daily Heatmap of Transferred Volume')
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='Transfers', color='Transfers', title='Daily Heatmap of Transfers')
+            fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='AmountAverage', color='AmountAverage', title='Daily Heatmap of Average Transferred Amount')
             st.plotly_chart(fig, use_container_width=True)
         with c2:
-            fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='Users', color='Users', title='Daily Heatmap of Transferring Users')
+            fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='Transfers', color='Transfers', title='Daily Heatmap of Transfers')
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='AmountAverage', color='AmountAverage', title='Daily Heatmap of Average Transferred Amount')
+            fig = px.scatter(filtered_transfers_heatmap, x='Hour', y='Day', size='Users', color='Users', title='Daily Heatmap of Transferring Users')
             st.plotly_chart(fig, use_container_width=True)
 
     # Cross Chain Comparison
@@ -603,6 +627,21 @@ with tab_transfers:
                 fig.update_layout(xaxis_title='Average Amount')
                 st.plotly_chart(fig, use_container_width=True)
 
+        with subtab_distribution:
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                fig = px.bar(filtered_transfers_distribution, x='Blockchain', y='Volume', color='Bucket', title='Total Transferred Volume of Each Group', log_y=True)
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.bar(filtered_transfers_distribution, x='Blockchain', y='Transfers', color='Bucket', title='Total Transfers of Each Group', log_y=True)
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c3:
+                fig = px.bar(filtered_transfers_distribution, x='Blockchain', y='Users', color='Bucket', title='Total Transferring Users of Each Group', log_y=True)
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
 # -------------------------------------------------- Swaps --------------------------------------------------
 with tab_swaps:
     st.write(
@@ -625,61 +664,87 @@ with tab_swaps:
 
     filtered_swaps_overview = swaps_overview.query("Blockchain == @options")
     filtered_swaps_daily = swaps_daily.query("Blockchain == @options")
-    # filtered_swaps_dexs_overview = swaps_dexs_overview.query("Blockchain == @options")
-    # filtered_swaps_dexs_daily = swaps_dexs_daily.query("Blockchain == @options")
-    # filtered_swaps_assets_overview = swaps_assets_overview.query("Blockchain == @options")
-    # filtered_swaps_assets_daily = swaps_assets_daily.query("Blockchain == @options")
+    filtered_swaps_heatmap = swaps_heatmap.query("Blockchain == @options")
+    filtered_swaps_dexs_overview = swaps_dexs_overview.query("Blockchain == @options")
+    filtered_swaps_dexs_daily = swaps_dexs_daily.query("Blockchain == @options")
+    filtered_swaps_types_overview = swaps_types_overview.query("Blockchain == @options")
+    filtered_swaps_types_daily = swaps_types_daily.query("Blockchain == @options")
 
-    # Swaps Data Layout
-    subtab_overview, subtab_heatmap, subtab_dexs, subtap_assets = st.tabs(['Overview', 'Heatmap', 'DEXs', 'Assets'])
+    # Selected Blockchain
+    if len(options) == 0:
+        st.warning('Please select at least one blockchain to see the metrics.')
+    
+    elif len(options) == 1:
 
-    with subtab_overview:
+        st.subheader("Overview")
 
-        # Selected Blockchain
-        if len(options) == 1:
+        c1, c2, c3, c4, c5 = st.columns(5)
+        with c1:
+            st.metric(label='Volume', value=filtered_swaps_overview['Volume'].round(), help='USD')
+            st.metric(label='Volume/Day', value=filtered_swaps_overview['Volume/Day'].round(), help='USD')
+        with c2:
+            st.metric(label='Swaps', value=filtered_swaps_overview['Swaps'])
+            st.metric(label='Swaps/Day', value=filtered_swaps_overview['Swaps/Day'].round())
+        with c3:
+            st.metric(label='Swappers', value=filtered_swaps_overview['Swappers'])
+            st.metric(label='Swappers/Day', value=filtered_swaps_overview['Swappers/Day'].round())
+        with c4:
+            st.metric(label='Average Swap Amount', value=filtered_swaps_overview['AmountAverage'].round(2), help='USD')
+            st.metric(label='Median Swap Amount', value=filtered_swaps_overview['AmountMedian'].round(2), help='USD')
+        with c5:
+            st.metric(label='Volume/Swapper', value=filtered_swaps_overview['Volume/Swapper'].round(), help='USD')
+            st.metric(label='Swaps/Swapper', value=filtered_swaps_overview['Swaps/Swapper'].round(2))
 
-            st.subheader(f"{options[0]}'s Overview")
+        st.subheader("Swaps Over Time")
 
-            c1, c2, c3, c4, c5 = st.columns(5)
-            with c1:
-                st.metric(label='Volume', value=filtered_swaps_overview['Volume'], help='USD')
-                st.metric(label='Volume/Day', value=filtered_swaps_overview['Volume/Day'], help='USD')
-            with c2:
-                st.metric(label='Swaps', value=filtered_swaps_overview['Swaps'], help='Number')
-                st.metric(label='Swaps/Day', value=filtered_swaps_overview['Swaps/Day'], help='Number')
-            with c3:
-                st.metric(label='Swappers', value=filtered_swaps_overview['Swappers'], help='Number')
-                st.metric(label='Swappers/Day', value=filtered_swaps_overview['Swappers/Day'], help='Number')
-            with c4:
-                st.metric(label='Average Swap Amount', value=filtered_swaps_overview['AmountAverage'], help='USD')
-                st.metric(label='Median Swap Amount', value=filtered_swaps_overview['AmountMedian'], help='USD')
-            with c5:
-                st.metric(label='Volume/Swapper', value=filtered_swaps_overview['Volume/Swapper'], help='USD')
-                st.metric(label='Swaps/Swapper', value=filtered_swaps_overview['Swaps/Swapper'], help='Number')
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            fig = px.area(filtered_swaps_daily, x='Date', y='Volume', title='Daily Volume of Swaps')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_swaps_daily['Date'], y=filtered_swaps_daily['Swaps'], name='Swaps'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_swaps_daily['Date'], y=filtered_swaps_daily['Swappers'], name='Swappers'), secondary_y=True)
+            fig.update_layout(title_text='Daily Swaps and Swappers')
+            fig.update_yaxes(title_text='Swaps', secondary_y=False)
+            fig.update_yaxes(title_text='Swappers', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+        with c3:
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_swaps_daily['Date'], y=filtered_swaps_daily['AmountAverage'], name='Average'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_swaps_daily['Date'], y=filtered_swaps_daily['AmountMedian'], name='Median'), secondary_y=True)
+            fig.update_layout(title_text='Daily Average and Median Swap Amount')
+            fig.update_yaxes(title_text='Average', secondary_y=False)
+            fig.update_yaxes(title_text='Median', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
 
-            st.subheader("Swaps Over Time")
+        st.subheader('Heatmap')
 
-            c1, c2, c3 = st.columns(3)
-            with c1:
-                fig = px.line(filtered_swaps_daily, x='Date', y='Volume', title='Daily Volume of Swaps')
-                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-                st.plotly_chart(fig, use_container_width=True)
-            with c2:
-                fig = px.line(filtered_swaps_daily, x='Date', y=['Swaps', 'Swappers'], title='Daily Number of Swaps and Swappers')
-                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-                st.plotly_chart(fig, use_container_width=True)
-            with c3:
-                fig = px.line(filtered_swaps_daily, x='Date', y=['AmountAverage', 'AmountMedian'], title='Daily Average and Median Swap Amount')
-                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-                st.plotly_chart(fig, use_container_width=True)
-            
-        # Cross Chain Comparison
-        else:
+        c1, c2 = st.columns(2)
+        with c1:
+            fig = px.scatter(filtered_swaps_heatmap, x='Hour', y='Day', size='Volume', color='Volume', title='Daily Heatmap of Swaps Volume')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.scatter(filtered_swaps_heatmap, x='Hour', y='Day', size='AmountAverage', color='AmountAverage', title='Daily Heatmap of Average Swap Amount')
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            fig = px.scatter(filtered_swaps_heatmap, x='Hour', y='Day', size='Swaps', color='Swaps', title='Daily Heatmap of v')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.scatter(filtered_swaps_heatmap, x='Hour', y='Day', size='Swappers', color='Swappers', title='Daily Heatmap of Swappers')
+            st.plotly_chart(fig, use_container_width=True)
+    
+    # Cross Chain Comparison
+    else:
+
+        subtab_overview, subtab_heatmap, subtab_dexs, subtap_assets = st.tabs(['Overview', 'Heatmap', 'DEXs', 'Assets'])
+
+        with subtab_overview:
 
             st.subheader("Overview of Swaps")
 
             c1, c2, c3 = st.columns(3)
-
             with c1:
                 fig = px.bar(filtered_swaps_overview, x='Blockchain', y='Volume', color='Blockchain', title='Total Swaps Volume', log_y=True)
                 fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
@@ -810,101 +875,129 @@ with tab_swaps:
                 fig.update_layout(title='Daily Share of Swappers')
                 st.plotly_chart(fig, use_container_width=True)
     
-    with subtab_heatmap:
+        with subtab_heatmap:
 
             st.subheader("Heatmap of Swaps")
 
-    # with subtab_dexs:
-        
-    #     st.subheader("Overview of DEXs")
+            c1, c2 = st.columns(2)
+            with c1:
+                fig = px.scatter(filtered_swaps_heatmap, x='Volume', y='Day', color='Blockchain', title='Daily Heatmap of Swaps Volume', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     c1, c2, c3 = st.columns(3)
+                fig = px.scatter(filtered_swaps_heatmap, x='Swaps', y='Day', color='Blockchain', title='Daily Heatmap of Swaps', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     with c1:
-    #         fig = px.histogram(filtered_swaps_dexs_overview.sort_values('Volume', ascending=False).head(20), x='DEX', y='Volume', color='Blockchain', title='Swaps Volume of Top DEXs', log_y=True)
-    #         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         fig.update_xaxes(categoryorder='total ascending')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.scatter(filtered_swaps_heatmap, x='Swappers', y='Day', color='Blockchain', title='Daily Heatmap of Swappers', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.pie(filtered_swaps_dexs_overview, values='Volume', names='DEX', title='Share of Swaps Volume of Top DEXs')
-    #         fig.update_layout(showlegend=False)
-    #         fig.update_traces(textinfo='percent+label', textposition='inside')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.scatter(filtered_swaps_heatmap, x='AmountAverage', y='Day', color='Blockchain', title='Daily Heatmap of Average Swap Amount', log_x=True)
+                fig.update_layout(xaxis_title='Average Amount')
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.scatter(filtered_swaps_heatmap, x='Volume', y='Hour', color='Blockchain', title='Hourly Heatmap of Swaps Volume', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     with c2:
-    #         fig = px.histogram(filtered_swaps_dexs_overview.sort_values('Swaps', ascending=False).head(20), x='DEX', y='Swaps', color='Blockchain', title='Swaps of Top DEXs', log_y=True)
-    #         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         fig.update_xaxes(categoryorder='total ascending')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.scatter(filtered_swaps_heatmap, x='Swaps', y='Hour', color='Blockchain', title='Hourly Heatmap of Swaps', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.pie(filtered_swaps_dexs_overview, values='Swaps', names='DEX', title='Share of Swaps of Top DEXs')
-    #         fig.update_layout(showlegend=False)
-    #         fig.update_traces(textinfo='percent+label', textposition='inside')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.scatter(filtered_swaps_heatmap, x='Swappers', y='Hour', color='Blockchain', title='Hourly Heatmap of Swappers', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     with c3:
-    #         fig = px.histogram(filtered_swaps_dexs_overview.sort_values('Swappers', ascending=False).head(20), x='DEX', y='Swappers', color='Blockchain', title='Swappers of Top DEXs', log_y=True)
-    #         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         fig.update_xaxes(categoryorder='total ascending')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.scatter(filtered_swaps_heatmap, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Swap Amoun', log_x=True)
+                fig.update_layout(xaxis_title='Average Amount')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.pie(filtered_swaps_dexs_overview, values='Swappers', names='DEX', title='Share of Swappers of Top DEXs')
-    #         fig.update_layout(showlegend=False)
-    #         fig.update_traces(textinfo='percent+label', textposition='inside')
-    #         st.plotly_chart(fig, use_container_width=True)
+        with subtab_dexs:
+            
+            st.subheader("Overview of DEXs")
 
-    #     st.subheader("Swaps of DEXs Over Time")
+            c1, c2, c3 = st.columns(3)
 
-    # with subtap_assets:
-        
-    #     st.subheader("Overview of Asset Types")
+            with c1:
+                fig = px.histogram(filtered_swaps_dexs_overview.sort_values('Volume', ascending=False).head(20), x='DEX', y='Volume', color='Blockchain', title='Swaps Volume of Top DEXs', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     c1, c2, c3 = st.columns(3)
+                fig = px.pie(filtered_swaps_dexs_overview, values='Volume', names='DEX', title='Share of Swaps Volume of Top DEXs')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     with c1:
-    #         fig = px.pie(filtered_swaps_assets_overview, values='Volume', names='Type', title='Share of Total Swaps Volume of Each Asset Type')
-    #         fig.update_layout(showlegend=False)
-    #         fig.update_traces(textinfo='percent+label', textposition='inside')
-    #         st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.histogram(filtered_swaps_dexs_overview.sort_values('Swaps', ascending=False).head(20), x='DEX', y='Swaps', color='Blockchain', title='Swaps of Top DEXs', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Volume', color='Type', title='Swaps Volume of Each Asset Type', log_y=True, barmode='group')
-    #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         fig.update_xaxes(categoryorder='total ascending')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.pie(filtered_swaps_dexs_overview, values='Swaps', names='DEX', title='Share of Swaps of Top DEXs')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Volume', color='Type', title='Share of Swaps Volume of Each Asset Type', log_y=True, barnorm='percent')
-    #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         st.plotly_chart(fig, use_container_width=True)
+            with c3:
+                fig = px.histogram(filtered_swaps_dexs_overview.sort_values('Swappers', ascending=False).head(20), x='DEX', y='Swappers', color='Blockchain', title='Swappers of Top DEXs', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #     with c2:
-    #         fig = px.pie(filtered_swaps_assets_overview, values='Swaps', names='Type', title='Share of Total Swaps of Each Asset Type')
-    #         fig.update_layout(showlegend=False)
-    #         fig.update_traces(textinfo='percent+label', textposition='inside')
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.pie(filtered_swaps_dexs_overview, values='Swappers', names='DEX', title='Share of Swappers of Top DEXs')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Swaps', color='Type', title='Swaps of Each Asset Type', log_y=True, barmode='group')
-    #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         fig.update_xaxes(categoryorder='total ascending')
-    #         st.plotly_chart(fig, use_container_width=True)
+            st.subheader("Swaps of DEXs Over Time")
 
-    #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Swaps', color='Type', title='Share of Swaps of Each Asset Type', log_y=True, barnorm='percent')
-    #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         st.plotly_chart(fig, use_container_width=True)
+        with subtap_assets:
+            
+            st.subheader("Overview of Asset Types")
 
-    #     with c3:
-    #         fig = px.pie(filtered_swaps_assets_overview, values='Swappers', names='Type', title='Share of Total Swappers of Each Asset Type')
-    #         fig.update_layout(showlegend=False)
-    #         fig.update_traces(textinfo='percent+label', textposition='inside')
-    #         st.plotly_chart(fig, use_container_width=True)
+            c1, c2, c3 = st.columns(3)
 
-    #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Swappers', color='Type', title='Swappers of Each Asset Type', log_y=True, barmode='group')
-    #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         fig.update_xaxes(categoryorder='total ascending')
-    #         st.plotly_chart(fig, use_container_width=True)
+            with c1:
+                fig = px.pie(filtered_swaps_types_overview, values='Volume', names='Type', title='Share of Total Swaps Volume of Each Asset Type')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-    #         fig = px.histogram(filtered_swaps_assets_overview, x='Blockchain', y='Swappers', color='Type', title='Share of Swappers of Each Asset Type', log_y=True, barnorm='percent')
-    #         fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-    #         st.plotly_chart(fig, use_container_width=True)
+                fig = px.histogram(filtered_swaps_types_overview, x='Blockchain', y='Volume', color='Type', title='Swaps Volume of Each Asset Type', log_y=True, barmode='group')
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.histogram(filtered_swaps_types_overview, x='Blockchain', y='Volume', color='Type', title='Share of Swaps Volume of Each Asset Type', log_y=True, barnorm='percent')
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+            with c2:
+                fig = px.pie(filtered_swaps_types_overview, values='Swaps', names='Type', title='Share of Total Swaps of Each Asset Type')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.histogram(filtered_swaps_types_overview, x='Blockchain', y='Swaps', color='Type', title='Swaps of Each Asset Type', log_y=True, barmode='group')
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.histogram(filtered_swaps_types_overview, x='Blockchain', y='Swaps', color='Type', title='Share of Swaps of Each Asset Type', log_y=True, barnorm='percent')
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+            with c3:
+                fig = px.pie(filtered_swaps_types_overview, values='Swappers', names='Type', title='Share of Total Swappers of Each Asset Type')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.histogram(filtered_swaps_types_overview, x='Blockchain', y='Swappers', color='Type', title='Swappers of Each Asset Type', log_y=True, barmode='group')
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.histogram(filtered_swaps_types_overview, x='Blockchain', y='Swappers', color='Type', title='Share of Swappers of Each Asset Type', log_y=True, barnorm='percent')
+                fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
 # -------------------------------------------------- NFTs --------------------------------------------------
 with tab_nfts:
