@@ -12,6 +12,7 @@ from PIL import Image
 # Transactions
 transactions_overview = pd.read_csv('Data/transactions_overview.csv')
 transactions_daily = pd.read_csv('Data/transactions_daily.csv')
+transactions_heatmap = pd.read_csv('Data/transactions_heatmap.csv')
 
 # Transfers
 transfers_overview = pd.read_csv('Data/transfers_overview.csv')
@@ -145,6 +146,7 @@ with tab_transactions:
     )
     filtered_transactions_overview = transactions_overview.query("Blockchain == @options")
     filtered_transactions_daily = transactions_daily.query("Blockchain == @options")
+    filtered_transactions_heatmap = transactions_heatmap.query("Blockchain == @options")
 
     # Selected Blockchain
     if len(options) == 0:
@@ -203,50 +205,154 @@ with tab_transactions:
             fig.update_yaxes(title_text='Average and Median', secondary_y=True)
             st.plotly_chart(fig, use_container_width=True)
 
-    # Cross Chain Comparison
-    else:
-        st.subheader("Transaction Fees")
-        c1, c2, c3 = st.columns([1, 1, 2])
+        st.subheader('Heatmap')
+
+        c1, c2 = st.columns(2)
         with c1:
-            fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Transactions', color='Blockchain', title='Total Transactions', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            fig = px.scatter(filtered_transactions_heatmap, x='Hour', y='Day', size='Transactions', color='Transactions', title='Daily Heatmap of Transactions')
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Blocks', color='Blockchain', title='Total Blocks', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
-
-            fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Fees', color='Blockchain', title='Total Transaction Fees', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            fig = px.scatter(filtered_transactions_heatmap, x='Hour', y='Day', size='Blocks', color='Blocks', title='Daily Heatmap of Blocks')
             st.plotly_chart(fig, use_container_width=True)
         with c2:
-            fig = px.pie(filtered_transactions_overview, values='Transactions', names='Blockchain', title='Share of Total Transaction')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
+            fig = px.scatter(filtered_transactions_heatmap, x='Hour', y='Day', size='Users', color='Users', title='Daily Heatmap of Users')
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.pie(filtered_transactions_overview, values='Blocks', names='Blockchain', title='Share of Total Blocks')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
+            fig = px.scatter(filtered_transactions_heatmap, x='Hour', y='Day', size='Fees', color='Fees', title='Daily Heatmap of Fees')
             st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.pie(filtered_transactions_overview, values='Fees', names='Blockchain', title='Share of Total Transaction Fees')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
-        with c3:
-            fig = px.line(filtered_transactions_daily, x='Date', y='Transactions', color='Blockchain', title='Daily Transactions', log_y=True)
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
+    # Cross Chain Comparison
+    else:
+        subtab_overview, subtab_fees, subtab_heatmap = st.tabs(['Overview', 'Fees', 'Heatmap'])
 
-            fig = px.line(filtered_transactions_daily, x='Date', y='Blocks', color='Blockchain', title='Daily Blocks', log_y=True)
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
+        with subtab_overview:
+            st.subheader("Transactions, Blocks, and Users")
+            c1, c2, c3 = st.columns([1, 1, 2])
+            with c1:
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Transactions', color='Blockchain', title='Total Transactions', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.line(filtered_transactions_daily, x='Date', y='Fees', color='Blockchain', title='Daily Transaction Fees', log_y=True)
-            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Blocks', color='Blockchain', title='Total Blocks', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Fees', color='Blockchain', title='Total Transaction Fees', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.pie(filtered_transactions_overview, values='Transactions', names='Blockchain', title='Share of Total Transaction')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.pie(filtered_transactions_overview, values='Blocks', names='Blockchain', title='Share of Total Blocks')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.pie(filtered_transactions_overview, values='Fees', names='Blockchain', title='Share of Total Transaction Fees')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+            with c3:
+                fig = px.line(filtered_transactions_daily, x='Date', y='Transactions', color='Blockchain', title='Daily Transactions', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.line(filtered_transactions_daily, x='Date', y='Blocks', color='Blockchain', title='Daily Blocks', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.line(filtered_transactions_daily, x='Date', y='Fees', color='Blockchain', title='Daily Transaction Fees', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='TPS', color='Blockchain', title='Average TPS', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Transactions/Block', color='Blockchain', title='Average Transactions/Block', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c3:
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Users/Day', color='Blockchain', title='Average Users/Day', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+        with subtab_fees:
+            st.subheader("Total Transaction Fees")
+            c1, c2, c3 = st.columns([1, 1, 2])
+            with c1:
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Fees', color='Blockchain', title='Total Transaction Fees', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.pie(filtered_transactions_overview, values='Fees', names='Blockchain', title='Share of Total Transaction Fees')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+            with c3:
+                fig = px.line(filtered_transactions_daily, x='Date', y='Fees', color='Blockchain', title='Daily Transaction Fees', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+            st.subheader("Fee Amounts")
+            c1, c2 = st.columns([1, 2])
+            with c1:
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='FeeAverage', color='Blockchain', title='Average Transaction Fees', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='FeeMedian', color='Blockchain', title='Median Transaction Fees', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+                
+                fig = px.bar(filtered_transactions_overview, x='Blockchain', y='Fees/Block', color='Blockchain', title='Median Transaction Fees/Block', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.line(filtered_transactions_daily, x='Date', y='FeeAverage', color='Blockchain', title='Daily Average Fee Amount', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.line(filtered_transactions_daily, x='Date', y='FeeMedian', color='Blockchain', title='Daily Median Fee Amount', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.line(filtered_transactions_daily, x='Date', y='Fees/Block', color='Blockchain', title='Daily Average Fees/Block', log_y=True)
+                fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+                st.plotly_chart(fig, use_container_width=True)
+
+        with subtab_heatmap:
+            c1, c2 = st.columns(2)
+            with c1:
+                fig = px.scatter(filtered_transactions_heatmap, x='Transactions', y='Day', color='Blockchain', title='Daily Heatmap of Transactions', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_transactions_heatmap, x='Blocks', y='Day', color='Blockchain', title='Daily Heatmap of Blocks', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_transactions_heatmap, x='Users', y='Day', color='Blockchain', title='Daily Heatmap of Users', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_transactions_heatmap, x='Fees', y='Day', color='Blockchain', title='Daily Heatmap of Fees', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.scatter(filtered_transactions_heatmap, x='Transactions', y='Hour', color='Blockchain', title='Hourly Heatmap of Transactions', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_transactions_heatmap, x='Blocks', y='Hour', color='Blockchain', title='Hourly Heatmap of Blocks', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_transactions_heatmap, x='Users', y='Hour', color='Blockchain', title='Hourly Heatmap of Users', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_transactions_heatmap, x='Fees', y='Hour', color='Blockchain', title='Hourly Heatmap of Fees', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+   
 # -------------------------------------------------- Transfers --------------------------------------------------
 with tab_transfers:
     st.write("""
