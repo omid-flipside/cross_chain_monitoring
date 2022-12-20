@@ -32,36 +32,9 @@ swaps_types_daily = pd.read_csv('Data/swaps_types_daily.csv')
 # NFTs
 nfts_overview = pd.read_csv('Data/nfts_overview.csv')
 nfts_daily = pd.read_csv('Data/nfts_daily.csv')
-
-# st.cache(ttl=3600)
-# def get_date(data):
-#     if data == 'swaps':
-#         return pd.read_csv('data/Swaps.csv')
-        # return pd.read_json('https://node-api.flipsidecrypto.com/api/v2/queries/14dc8c9f-9d45-439d-ac4e-46505d1a8298/data/latest')
-# raw_swaps = get_date('swaps')
-
-# raw_swaps = pd.read_csv('Data/Swaps.csv')
-# swaps_dexs_overview = raw_swaps.groupby(['Blockchain', 'DEX'], as_index=False).aggregate(
-#     {'Date': 'nunique', 'Swaps': 'sum', 'Swappers': 'sum', 'Volume': 'sum', 'AmountAverage': 'mean', 'AmountMedian': 'mean'}).round()
-# swaps_dexs_overview['Swaps/Day'] = (swaps_dexs_overview['Swaps'] / swaps_dexs_overview['Date']).round()
-# swaps_dexs_overview['Swappers/Day'] = (swaps_dexs_overview['Swappers'] / swaps_dexs_overview['Date']).round()
-# swaps_dexs_overview['Volume/Day'] = (swaps_dexs_overview['Volume'] / swaps_dexs_overview['Date']).round()
-# swaps_dexs_overview['Swaps/Swapper'] = (swaps_dexs_overview['Swaps'] / swaps_dexs_overview['Swappers']).round()
-# swaps_dexs_overview['Volume/Swapper'] = (swaps_dexs_overview['Volume'] / swaps_dexs_overview['Swappers']).round()
-
-# swaps_dexs_daily = raw_swaps.groupby(['Date', 'Blockchain', 'DEX'], as_index=False).aggregate(
-#     {'Swaps': 'sum', 'Swappers': 'sum', 'Volume': 'sum', 'AmountAverage': 'mean', 'AmountMedian': 'mean'})
-
-# swaps_assets_overview = raw_swaps.groupby(['Blockchain', 'Type'], as_index=False).aggregate(
-#     {'Date': 'nunique', 'Swaps': 'sum', 'Swappers': 'sum', 'Volume': 'sum', 'AmountAverage': 'mean', 'AmountMedian': 'mean'}).round()
-# swaps_assets_overview['Swaps/Day'] = (swaps_assets_overview['Swaps'] / swaps_assets_overview['Date']).round()
-# swaps_assets_overview['Swappers/Day'] = (swaps_assets_overview['Swappers'] / swaps_assets_overview['Date']).round()
-# swaps_assets_overview['Volume/Day'] = (swaps_assets_overview['Volume'] / swaps_assets_overview['Date']).round()
-# swaps_assets_overview['Swaps/Swapper'] = (swaps_assets_overview['Swaps'] / swaps_assets_overview['Swappers']).round()
-# swaps_assets_overview['Volume/Swapper'] = (swaps_assets_overview['Volume'] / swaps_assets_overview['Swappers']).round()
-
-# swaps_assets_daily = raw_swaps.groupby(['Date', 'Blockchain', 'Asset', 'Type'], as_index=False).aggregate(
-#     {'Swaps': 'sum', 'Swappers': 'sum', 'Volume': 'sum', 'AmountAverage': 'mean', 'AmountMedian': 'mean'})
+nfts_heatmap = pd.read_csv('Data/nfts_heatmap.csv')
+nfts_marketplaces_overview = pd.read_csv('Data/nfts_marketplaces_overview.csv')
+nfts_marketplaces_daily = pd.read_csv('Data/nfts_marketplaces_daily.csv')
 
 # -------------------------------------------------- Layout --------------------------------------------------
 
@@ -379,6 +352,12 @@ with tab_transfers:
         Circle is regulated as a licensed money transfer provider under US federal law and its financial statements are audited annually and are subject to review by the SEC.
         """)
 
+    # c1,c2,c3,c4 = st.columns(4)
+    # with c1:
+    #     fig = px.funnel(transactions_overview.sort_values(by=['TPS']), x='TPS', y='Blockchain', color='Blockchain', title='TPS', log_x=True)
+    #     fig.update_layout(showlegend=False, yaxis_title=None)
+    #     st.plotly_chart(fig, use_container_width=True)
+
     # Filter the blockchains
     options = st.multiselect(
         'Select your desired blockchains:',
@@ -623,7 +602,7 @@ with tab_transfers:
                 fig = px.scatter(filtered_transfers_heatmap, x='Users', y='Hour', color='Blockchain', title='Hourly Heatmap of Transferring Users', log_x=True)
                 st.plotly_chart(fig, use_container_width=True)
 
-                fig = px.scatter(filtered_transfers_heatmap, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Transferred Amoun', log_x=True)
+                fig = px.scatter(filtered_transfers_heatmap, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Transferred Amount', log_x=True)
                 fig.update_layout(xaxis_title='Average Amount')
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -903,7 +882,7 @@ with tab_swaps:
                 fig = px.scatter(filtered_swaps_heatmap, x='Swappers', y='Hour', color='Blockchain', title='Hourly Heatmap of Swappers', log_x=True)
                 st.plotly_chart(fig, use_container_width=True)
 
-                fig = px.scatter(filtered_swaps_heatmap, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Swap Amoun', log_x=True)
+                fig = px.scatter(filtered_swaps_heatmap, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Swap Amount', log_x=True)
                 fig.update_layout(xaxis_title='Average Amount')
                 st.plotly_chart(fig, use_container_width=True)
 
@@ -946,7 +925,26 @@ with tab_swaps:
                 fig.update_traces(textinfo='percent+label', textposition='inside')
                 st.plotly_chart(fig, use_container_width=True)
 
-            st.subheader("Swaps of DEXs Over Time")
+            # st.subheader("Swaps of DEXs Over Time")
+
+            # c1, c2 = st.columns(2)
+            # with c1:
+            #     fig = px.line(filtered_swaps_dexs_daily.sort_values(['Date', 'Volume'], ascending=[True, False]).head(20), x='Date', y='Volume', color='DEX', title='Daily Swaps Volume')
+            #     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            #     st.plotly_chart(fig, use_container_width=True)
+            # with c2:
+            #     fig = go.Figure()
+            #     for i in options:
+            #         fig.add_trace(go.Scatter(
+            #             name=i,
+            #             x=filtered_swaps_daily.query("Blockchain == @i")['Date'],
+            #             y=filtered_swaps_daily.query("Blockchain == @i")['Volume'],
+            #             mode='lines',
+            #             stackgroup='one',
+            #             groupnorm='percent'
+            #         ))
+            #     fig.update_layout(title='Daily Share of Swaps Volume')
+            #     st.plotly_chart(fig, use_container_width=True)
 
         with subtap_assets:
             
@@ -1017,12 +1015,19 @@ with tab_nfts:
         options=nfts_overview['Blockchain'].unique(),
         default=nfts_overview['Blockchain'].unique()
     )
-    filtered_nfts_overview = nfts_overview.query("Blockchain == @options")
-    filtered_nfts_daily = nfts_daily.query("Blockchain == @options")
+    filtered_nfts_overview = nfts_overview.query('Blockchain == @options')
+    filtered_nfts_daily = nfts_daily.query('Blockchain == @options')
+    filtered_nfts_heatmap = nfts_heatmap.query('Blockchain == @options')
+    filtered_nfts_marketplaces_overview = nfts_marketplaces_overview.query('Blockchain == @options')
+    filtered_nfts_marketplaces_daily = nfts_marketplaces_daily.query('Blockchain == @options')
 
     # Selected Blockchain
-    if len(options) == 1:
-        st.subheader(f"Overview")
+    if len(options) == 0:
+        st.warning('Please select at least one blockchain to see the metrics.')
+    
+    elif len(options) == 1:
+
+        st.subheader('Overview')
 
         c1, c2, c3, c4, c5, c6 = st.columns(6)
         with c1:
@@ -1050,75 +1055,254 @@ with tab_nfts:
             st.metric(label='NFTs/Sale', value=filtered_nfts_overview['NFTs/Sale'].round(2))
             st.metric(label='NFTs/Collection', value=filtered_nfts_overview['NFTs/Collection'].round())
 
+        st.subheader("Sales Over Time")
+
+        c1, c2 = st.columns(2)
+        with c1:
+            fig = px.area(filtered_nfts_daily, x='Date', y='Volume', title='Daily Sales Volume')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_nfts_daily['Date'], y=filtered_nfts_daily['PriceAverage'], name='Average'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_nfts_daily['Date'], y=filtered_nfts_daily['PriceMedian'], name='Median'), secondary_y=True)
+            fig.update_layout(title_text='Daily Average and Median NFT Prices')
+            fig.update_yaxes(title_text='Average', secondary_y=False)
+            fig.update_yaxes(title_text='Median', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_nfts_daily['Date'], y=filtered_nfts_daily['Sales'], name='Sales'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_nfts_daily['Date'], y=filtered_nfts_daily['Buyers'], name='Buyers'), secondary_y=True)
+            fig.update_layout(title_text='Daily Sales and Buyers')
+            fig.update_yaxes(title_text='Sales', secondary_y=False)
+            fig.update_yaxes(title_text='Buyers', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = sp.make_subplots(specs=[[{'secondary_y': True}]])
+            fig.add_trace(go.Bar(x=filtered_nfts_daily['Date'], y=filtered_nfts_daily['NFTs'], name='NFTs'), secondary_y=False)
+            fig.add_trace(go.Line(x=filtered_nfts_daily['Date'], y=filtered_nfts_daily['Collections'], name='Collections'), secondary_y=True)
+            fig.update_layout(title_text='Daily Traded NFTs and Collections')
+            fig.update_yaxes(title_text='NFTs', secondary_y=False)
+            fig.update_yaxes(title_text='Collections', secondary_y=True)
+            st.plotly_chart(fig, use_container_width=True)
+            
+        st.subheader('Heatmap')
+
+        c1, c2 = st.columns(2)
+        with c1:
+            fig = px.scatter(filtered_nfts_heatmap, x='Hour', y='Day', size='Volume', color='Volume', title='Daily Heatmap of Sales Volume')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.scatter(filtered_nfts_heatmap, x='Hour', y='Day', size='PriceAverage', color='PriceAverage', title='Daily Heatmap of Average NFT Price')
+            st.plotly_chart(fig, use_container_width=True)
+        with c2:
+            fig = px.scatter(filtered_nfts_heatmap, x='Hour', y='Day', size='Sales', color='Sales', title='Daily Heatmap of Sales')
+            st.plotly_chart(fig, use_container_width=True)
+
+            fig = px.scatter(filtered_nfts_heatmap, x='Hour', y='Day', size='Buyers', color='Buyers', title='Daily Heatmap of Buyers')
+            st.plotly_chart(fig, use_container_width=True)
+    
     # Cross Chain Comparison
     else:
-        st.subheader("Overview")
 
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Volume', color='Blockchain', title='Total Sales Volume', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+        subtab_overview, subtab_heatmap, subtab_marketplaces = st.tabs(['Overview', 'Heatmap', 'Marketplaces'])
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Sales', color='Blockchain', title='Total Sales', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+        with subtab_overview:
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Buyers', color='Blockchain', title='Total Buyers', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+            st.subheader("Overview of Sales")
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='NFTs', color='Blockchain', title='Total NFTs', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Volume', color='Blockchain', title='Total Sales Volume', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Collections', color='Blockchain', title='Total Collections', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Sales', color='Blockchain', title='Total Sales', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-        with c2:
-            fig = px.pie(filtered_nfts_overview, values='Volume', names='Blockchain', title='Share of Total Sales Volume')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Buyers', color='Blockchain', title='Total Buyers', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.pie(filtered_nfts_overview, values='Sales', names='Blockchain', title='Share of Total Sales')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='NFTs', color='Blockchain', title='Total NFTs', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.pie(filtered_nfts_overview, values='Buyers', names='Blockchain', title='Share of Total Buyers')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Collections', color='Blockchain', title='Total Collections', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.pie(filtered_nfts_overview, values='NFTs', names='Blockchain', title='Share of Total NFTs')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.pie(filtered_nfts_overview, values='Volume', names='Blockchain', title='Share of Total Sales Volume')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.pie(filtered_nfts_overview, values='Collections', names='Blockchain', title='Share of Total Collections')
-            fig.update_layout(showlegend=False)
-            fig.update_traces(textinfo='percent+label', textposition='inside')
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.pie(filtered_nfts_overview, values='Sales', names='Blockchain', title='Share of Total Sales')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-        with c3:
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Volume/Day', color='Blockchain', title='Average Volume/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.pie(filtered_nfts_overview, values='Buyers', names='Blockchain', title='Share of Total Buyers')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Sales/Day', color='Blockchain', title='Average Sales/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.pie(filtered_nfts_overview, values='NFTs', names='Blockchain', title='Share of Total NFTs')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Buyers/Day', color='Blockchain', title='Average Buyers/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.pie(filtered_nfts_overview, values='Collections', names='Blockchain', title='Share of Total Collections')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='NFTs/Day', color='Blockchain', title='Average NFTs/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+            with c3:
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Volume/Day', color='Blockchain', title='Average Volume/Day', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Collections/Day', color='Blockchain', title='Average Collections/Day', log_y=True)
-            fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
-            st.plotly_chart(fig, use_container_width=True)
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Sales/Day', color='Blockchain', title='Average Sales/Day', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Buyers/Day', color='Blockchain', title='Average Buyers/Day', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='NFTs/Day', color='Blockchain', title='Average NFTs/Day', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.bar(filtered_nfts_overview, x='Blockchain', y='Collections/Day', color='Blockchain', title='Average Collections/Day', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                st.plotly_chart(fig, use_container_width=True)
+        
+        with subtab_heatmap:
+
+            st.subheader("Heatmap of Sales")
+
+            c1, c2 = st.columns(2)
+            with c1:
+                fig = px.scatter(filtered_nfts_heatmap, x='Volume', y='Day', color='Blockchain', title='Daily Heatmap of Sales Volume', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_nfts_heatmap, x='Sales', y='Day', color='Blockchain', title='Daily Heatmap of Sales', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_nfts_heatmap, x='Buyers', y='Day', color='Blockchain', title='Daily Heatmap of Buyers', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_nfts_heatmap, x='PriceAverage', y='Day', color='Blockchain', title='Daily Heatmap of Average NFT Price', log_x=True)
+                fig.update_layout(xaxis_title='Average Price')
+                st.plotly_chart(fig, use_container_width=True)
+            with c2:
+                fig = px.scatter(filtered_nfts_heatmap, x='Volume', y='Hour', color='Blockchain', title='Hourly Heatmap of Sales Volume', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_nfts_heatmap, x='Sales', y='Hour', color='Blockchain', title='Hourly Heatmap of Sales', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_nfts_heatmap, x='Buyers', y='Hour', color='Blockchain', title='Hourly Heatmap of Buyers', log_x=True)
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.scatter(filtered_nfts_heatmap, x='PriceAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average NFT Price', log_x=True)
+                fig.update_layout(xaxis_title='Average Price')
+                st.plotly_chart(fig, use_container_width=True)
+
+        with subtab_marketplaces:
+
+            st.subheader("Overview of NFT Marketplaces")
+
+            c1, c2, c3 = st.columns(3)
+            with c1:
+                fig = px.histogram(filtered_nfts_marketplaces_overview.sort_values('Volume', ascending=False).head(20), x='Marketplace', y='Volume', color='Blockchain', title='Sales Volume of Top marketplaces', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.pie(filtered_nfts_marketplaces_overview, values='Volume', names='Marketplace', title='Share of Sales Volume of Top Marketplace')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+            with c2:
+                fig = px.histogram(filtered_nfts_marketplaces_overview.sort_values('Sales', ascending=False).head(20), x='Marketplace', y='Sales', color='Blockchain', title='Sales of Top Marketplace', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.pie(filtered_nfts_marketplaces_overview, values='Sales', names='Marketplace', title='Share of Sales of Top Marketplace')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+            with c3:
+                fig = px.histogram(filtered_nfts_marketplaces_overview.sort_values('Buyers', ascending=False).head(20), x='Marketplace', y='Buyers', color='Blockchain', title='Buyers of Top Marketplace', log_y=True)
+                fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+                fig.update_xaxes(categoryorder='total ascending')
+                st.plotly_chart(fig, use_container_width=True)
+
+                fig = px.pie(filtered_nfts_marketplaces_overview, values='Buyers', names='Marketplace', title='Share of Buyers of Top Marketplace')
+                fig.update_layout(showlegend=False)
+                fig.update_traces(textinfo='percent+label', textposition='inside')
+                st.plotly_chart(fig, use_container_width=True)
+
+            # st.subheader("Sales of NFT Marketplaces Over Time")
+
+            # c1, c2 = st.columns(2)
+            # with c1:
+            #     fig = px.line(filtered_nfts_marketplaces_daily, x='Date', y='Volume', color='Marketplace', title='Daily Sales Volume')
+            #     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            #     st.plotly_chart(fig, use_container_width=True)
+
+            #     fig = px.line(filtered_nfts_marketplaces_daily, x='Date', y='Sales', color='Marketplace', title='Daily Sales')
+            #     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            #     st.plotly_chart(fig, use_container_width=True)
+
+            #     fig = px.line(filtered_nfts_marketplaces_daily, x='Date', y='Buyers', color='Marketplace', title='Daily Buyers')
+            #     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
+            #     st.plotly_chart(fig, use_container_width=True)
+
+            # with c2:
+            #     fig = go.Figure()
+            #     for i in options:
+            #         fig.add_trace(go.Scatter(
+            #             name=i,
+            #             x=filtered_nfts_marketplaces_daily.query("Blockchain == @i")['Date'],
+            #             y=filtered_nfts_marketplaces_daily.query("Blockchain == @i")['Volume'],
+            #             mode='lines',
+            #             stackgroup='one',
+            #             groupnorm='percent'
+            #         ))
+            #     fig.update_layout(title='Daily Share of Sales Volume')
+            #     st.plotly_chart(fig, use_container_width=True)
+                
+            #     fig = go.Figure()
+            #     for i in options:
+            #         fig.add_trace(go.Scatter(
+            #             name=i,
+            #             x=filtered_nfts_marketplaces_daily.query("Blockchain == @i")['Date'],
+            #             y=filtered_nfts_marketplaces_daily.query("Blockchain == @i")['Sales'],
+            #             mode='lines',
+            #             stackgroup='one',
+            #             groupnorm='percent'
+            #         ))
+            #     fig.update_layout(title='Daily Share of Sales')
+            #     st.plotly_chart(fig, use_container_width=True)
+
+            #     fig = go.Figure()
+            #     for i in options:
+            #         fig.add_trace(go.Scatter(
+            #             name=i,
+            #             x=filtered_nfts_marketplaces_daily.query("Blockchain == @i")['Date'],
+            #             y=filtered_nfts_marketplaces_daily.query("Blockchain == @i")['Buyers'],
+            #             mode='lines',
+            #             stackgroup='one',
+            #             groupnorm='percent'
+            #         ))
+            #     fig.update_layout(title='Daily Share of Buyers')
+            #     st.plotly_chart(fig, use_container_width=True)
