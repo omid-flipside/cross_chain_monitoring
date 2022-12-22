@@ -31,30 +31,41 @@ st.write("")
 
 st.write(
     """
-    The crypto industry continues to progress regardless of the market condition and contributors of each
-    blockchain keep developing different segments of the industry and the whole crypto ecosystem.
-    This tool is designed to allow viewers to journey into the world of crypto ecosystems of some of the
-    major blockchains, and compare their performance.
+    The crypto industry continues to progress and its development has never stopped. Contributors
+    of each blockchain keep developing each segment of the industry and the whole crypto ecosystem.
+    This tool is designed to allow viewers to journey into the world of crypto ecosystems of some
+    of the major blockchains, and compare their performance.
 
-    This tool is designed and structured in multiple **Tabs**, which address a different segment of the crypto
-    industry. Within each segment (Transactions, Transfers, Swaps, and NFTs) you are able to filter your desired
-    blockchains to narrow/expand the comparison. By selecting a single blockchain, you are able to observe a
-    deep dive into that particular network.
+    This tool is designed and structured in multiple **Pages** that are accessible using the sidebar.
+    Each of these Pages addresses a different segment of the crypto industry. Within each segment
+    (Macro, Transfers, Swaps, NFTs, etc.) you are able to filter your desired blockchains to
+    narrow/expand the comparison. By selecting a single blockchain, you can observe a deep dive
+    into that particular network.
+
+    All values for amounts, prices, and volumes are in **U.S. dollars** and the time frequency of the
+    analysis was limited to the last **30 days**.
     """
 )
 
 st.subheader('Methodology')
 st.write(
     """
-    The data for this cross-chain comparison were selected from the [Flipside Crypto](https://flipsidecrypto.xyz/)
-    data platform and queried using the [Flipside ShroomDK](https://sdk.flipsidecrypto.xyz/shroomdk).
-    The results of these queries were saved into multiple CSV files in a
-    [GitHub Repository](https://github.com/alitslm/cross_chain_monitoring). The scripts are currently manually run
-    to both cover the recent data, as well as backfilling the previous ones.
+    The data for this cross-chain comparison were selected from the [**Flipside Crypto**](https://flipsidecrypto.xyz/)
+    data platform by using its **REST API**. These queries are currently set to **re-run every 24 hours** to cover the latest
+    data and are imported as a JSON file directly to each page. The data were selected with a **2 days delay** for all
+    blockchains to be in sync with one another. The codes for this tool are saved and accessible in its 
+    [**GitHub Repository**](https://github.com/alitslm/cross_chain_monitoring).
 
-    While all the codes and queries are accessible through the GitHub repository mentioned above, the following
-    dashboards created using Flipside Crypto were used as the core references in developing the current tool.
+    It is worth mentioning that a considerable portion of the data used for this tool was manually decoded from the raw
+    transaction data on some of the blockchains. Besides that, the names of addresses, DEXs, collections, etc. are also
+    manually labeled. As the queries are updated on a daily basis to cover the most recent data, there is a chance
+    that viewers encounter inconsistent data through the app. Due to the heavy computational power required to execute
+    the queries, and also the size of the raw data being too large, it was not feasible to cover data for a longer period,
+    or by downloading the data and loading it from the repository itself. Therefore, the REST API was selected as the
+    proper form of loading data for the time being.
 
+    Besides the codes and queries mentioned above, the following dashboards created using Flipside Crypto were used
+    as the core references in developing the current tool:
     - [Flipside World Cup: Gas Guzzlers](https://app.flipsidecrypto.com/dashboard/flipsides-world-cup-gas-guzzlers-iTcitG)
     - [Flipside World Cup: USDC Transfers](https://app.flipsidecrypto.com/dashboard/flipside-world-cup-usdc-transfers-l-dWsf)
     - [Flipside World Cup: NFT Sales](https://app.flipsidecrypto.com/dashboard/flipside-world-cup-nft-sales-lDvMLG)
@@ -65,14 +76,16 @@ st.write(
 st.subheader('Future Works')
 st.write(
     """
-    This tool is a work in progress and other blockchains/metrics are constantly being added to further facilitate
-    the comparison of different networks and segments with one another. Feel free to @ me on Twitter
-    ([@AliTslm](https://twitter.com/AliTslm)) to share your feedback, suggestions, and even critics with me.
+    This tool is a work in progress and will continue to be developed moving forward. Adding other blockchains,
+    more KPIs and metrics, optimizing the code in general, enhancing the UI/UX of the tool, and more importantly,
+    improving the data pipeline by utilizing [**Flipside ShroomDK**](https://sdk.flipsidecrypto.xyz/shroomdk) are
+    among the top priorities for the development of this app. Feel free to share your feedback, suggestions, and
+    also critics with me.
     """
 )
 
 c1, c2 = st.columns(2)
 with c1:
-    st.info('Developer: [@AliTslm](https://twitter.com/AliTslm)', icon="💻")
+    st.info('**Developer/Analyst: [@AliTslm](https://twitter.com/AliTslm)**', icon="💻")
 with c2:
-    st.info('Data: [Flipside Crypto](https://flipsidecrypto.xyz/)', icon="🧠")
+    st.info('**Data: [Flipside Crypto](https://flipsidecrypto.xyz/)**', icon="🧠")
