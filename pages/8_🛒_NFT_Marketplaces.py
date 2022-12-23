@@ -8,8 +8,12 @@ import plotly.graph_objects as go
 st.set_page_config(page_title='NFT Marketplaces - Cross Chain Monitoring', page_icon=':bar_chart:', layout='wide')
 st.title('🛒 NFT Marketplaces')
 
+# Style
+with open('style.css')as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
+
 # Data Sources
-@st.cache(ttl=10800)
+@st.cache(ttl=600)
 def get_data(data_sector, data_type):
     if data_sector == 'NFTs':
         if data_type == 'Overview':
