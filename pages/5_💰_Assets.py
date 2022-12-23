@@ -241,32 +241,32 @@ else:
             fig.update_traces(textinfo='percent+label', textposition='inside')
             st.plotly_chart(fig, use_container_width=True)
 
-        st.subheader('Stats of Blockchains')
+        st.subheader('Blockchains')
         c1, c2 = st.columns([2, 1])
         with c1:
             fig = px.histogram(df, x='Blockchain', y='Volume', color='Type', title='Swaps Volume of Each Asset Type', log_y=True, barmode='group')
-            fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.histogram(df, x='Blockchain', y='Swaps', color='Type', title='Swaps of Each Asset Type', log_y=True, barmode='group')
-            fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.histogram(df, x='Blockchain', y='Swappers', color='Type', title='Swappers of Each Asset Type', log_y=True, barmode='group')
-            fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
             st.plotly_chart(fig, use_container_width=True)
 
         with c2:
             fig = px.histogram(df, x='Blockchain', y='Volume', color='Type', title='Share of Swaps Volume of Each Asset Type', log_y=True, barnorm='percent')
-            fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.histogram(df, x='Blockchain', y='Swaps', color='Type', title='Share of Swaps of Each Asset Type', log_y=True, barnorm='percent')
-            fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.histogram(df, x='Blockchain', y='Swappers', color='Type', title='Share of Swappers of Each Asset Type', log_y=True, barnorm='percent')
-            fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
             st.plotly_chart(fig, use_container_width=True)
 
     with subtab_assets:

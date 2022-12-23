@@ -309,29 +309,35 @@ else:
         df = transfers_heatmap.query('Blockchain == @options')
         with c1:
             fig = px.scatter(df, x='Volume', y='Day', color='Blockchain', title='Daily Heatmap of Transferred Volume', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Transfers', y='Day', color='Blockchain', title='Daily Heatmap of Transfers', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Users', y='Day', color='Blockchain', title='Daily Heatmap of Transferring Users', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='AmountAverage', y='Day', color='Blockchain', title='Daily Heatmap of Average Transferred Amount', log_x=True)
-            fig.update_layout(xaxis_title='Average Amount')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
         with c2:
             fig = px.scatter(df, x='Volume', y='Hour', color='Blockchain', title='Hourly Heatmap of Transferred Volume', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Transfers', y='Hour', color='Blockchain', title='Hourly Heatmap of Transfers', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Users', y='Hour', color='Blockchain', title='Hourly Heatmap of Transferring Users', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Transferred Amount', log_x=True)
-            fig.update_layout(xaxis_title='Average Amount')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
     with subtab_distribution:

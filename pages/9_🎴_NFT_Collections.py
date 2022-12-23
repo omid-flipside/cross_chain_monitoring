@@ -55,18 +55,22 @@ elif len(options) == 1:
     with c1:
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='Volume', color='Collection', title='Sales Volume of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='Sales', color='Collection', title='Sales of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='Buyers', color='Collection', title='Buyers of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='NFTs', color='Collection', title='Traded NFTs of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
@@ -96,18 +100,22 @@ elif len(options) == 1:
     with c1:
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceAverage', color='Collection', title='Average Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceMax', color='Collection', title='Highest Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
     with c2:
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceMedian', color='Collection', title='Median Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceFloor', color='Collection', title='Floor Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
 # Cross Chain Comparison
@@ -118,18 +126,22 @@ else:
     with c1:
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='Volume', color='Blockchain', title='Sales Volume of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='Sales', color='Blockchain', title='Sales of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='Buyers', color='Blockchain', title='Buyers of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='NFTs', color='Blockchain', title='Traded NFTs of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
     with c2:
@@ -159,16 +171,20 @@ else:
     with c1:
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceAverage', color='Blockchain', title='Average Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceMax', color='Blockchain', title='Highest Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
     with c2:
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceMedian', color='Blockchain', title='Median Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.histogram(df.sort_values('Volume', ascending=False).head(20), x='Collection', y='PriceFloor', color='Blockchain', title='Floor Price of Top Collections', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+        fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True)

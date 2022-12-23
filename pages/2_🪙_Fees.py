@@ -83,6 +83,7 @@ elif len(options) == 1:
     df = transactions_fee_payers.query("Blockchain == @options")
     fig = px.bar(df, x='User', y='Fees', color='User', title='Total Fees Paid By Top Fee Payers')
     fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'total ascending'})
+    fig.update_xaxes(type='category')
     st.plotly_chart(fig, use_container_width=True)
 
 # Cross Chain Comparison

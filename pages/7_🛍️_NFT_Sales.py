@@ -109,27 +109,35 @@ elif len(options) == 1:
     c1, c2 = st.columns(2)
     with c1:
         fig = px.scatter(df, x='Hour', y='Day', size='Volume', color='Volume', title='Heatmap of Sales Volume')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='PriceAverage', color='PriceAverage', title='Heatmap of Average NFT Price')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='PriceMedian', color='PriceMedian', title='Heatmap of Median NFT Price')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='PriceMax', color='PriceMax', title='Heatmap of Maximum NFT Price')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
     with c2:
         fig = px.scatter(df, x='Hour', y='Day', size='Sales', color='Sales', title='Heatmap of Sales')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='Buyers', color='Buyers', title='Heatmap of Buyers')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='NFTs', color='Buyers', title='Heatmap of Traded NFTs')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='Collections', color='Buyers', title='Heatmap of Traded Collections')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
 # Cross Chain Comparison

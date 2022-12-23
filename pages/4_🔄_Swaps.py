@@ -98,15 +98,19 @@ elif len(options) == 1:
     c1, c2 = st.columns(2)
     with c1:
         fig = px.scatter(df, x='Hour', y='Day', size='Volume', color='Volume', title='Heatmap of Swaps Volume')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='AmountAverage', color='AmountAverage', title='Heatmap of Average Swap Amount')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
     with c2:
         fig = px.scatter(df, x='Hour', y='Day', size='Swaps', color='Swaps', title='Heatmap of Swaps')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
         fig = px.scatter(df, x='Hour', y='Day', size='Swappers', color='Swappers', title='Heatmap of Swappers')
+        fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
         st.plotly_chart(fig, use_container_width=True)
 
 # Cross Chain Comparison
@@ -254,27 +258,33 @@ else:
         c1, c2 = st.columns(2)
         with c1:
             fig = px.scatter(df, x='Volume', y='Day', color='Blockchain', title='Daily Heatmap of Swaps Volume', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Swaps', y='Day', color='Blockchain', title='Daily Heatmap of Swaps', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Swappers', y='Day', color='Blockchain', title='Daily Heatmap of Swappers', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='AmountAverage', y='Day', color='Blockchain', title='Daily Heatmap of Average Swap Amount', log_x=True)
-            fig.update_layout(xaxis_title='Average Amount')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
         with c2:
             fig = px.scatter(df, x='Volume', y='Hour', color='Blockchain', title='Hourly Heatmap of Swaps Volume', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Swaps', y='Hour', color='Blockchain', title='Hourly Heatmap of Swaps', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='Swappers', y='Hour', color='Blockchain', title='Hourly Heatmap of Swappers', log_x=True)
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
 
             fig = px.scatter(df, x='AmountAverage', y='Hour', color='Blockchain', title='Hourly Heatmap of Average Swap Amount', log_x=True)
-            fig.update_layout(xaxis_title='Average Amount')
+            fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
             st.plotly_chart(fig, use_container_width=True)
