@@ -38,7 +38,8 @@ transfers_wallet_types = get_data('Transfers', 'Wallet Types')
 options = st.multiselect(
     '**Select your desired blockchains:**',
     options=transfers_overview['Blockchain'].unique(),
-    default=transfers_overview['Blockchain'].unique()
+    default=transfers_overview['Blockchain'].unique(),
+    key='transfers_options'
 )
 
 # Selected Blockchain

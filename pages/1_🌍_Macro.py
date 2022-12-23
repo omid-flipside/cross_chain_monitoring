@@ -32,7 +32,8 @@ transactions_fee_payers = get_data('Transactions', 'Fee Payers')
 options = st.multiselect(
     '**Select your desired blockchains:**',
     options=transactions_overview['Blockchain'].unique(),
-    default=transactions_overview['Blockchain'].unique()
+    default=transactions_overview['Blockchain'].unique(),
+    key='macro_options'
 )
 
 # Selected Blockchain

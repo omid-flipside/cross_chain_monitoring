@@ -35,7 +35,8 @@ nfts_marketplaces_daily = get_data('NFTs', 'Marketplaces Daily')
 options = st.multiselect(
     '**Select your desired blockchains:**',
     options=nfts_overview['Blockchain'].unique(),
-    default=nfts_overview['Blockchain'].unique()
+    default=nfts_overview['Blockchain'].unique(),
+    key='nfts_options'
 )
 
 # Selected Blockchain

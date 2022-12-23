@@ -45,7 +45,8 @@ swaps_assets_daily = get_data('Swaps Assets Daily')
 options = st.multiselect(
     '**Select your desired blockchains:**',
     options=swaps_overview['Blockchain'].unique(),
-    default=swaps_overview['Blockchain'].unique()
+    default=swaps_overview['Blockchain'].unique(),
+    key='assets_options'
 )
 
 # Selected Blockchain
