@@ -14,7 +14,7 @@ with open('style.css')as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html = True)
 
 # Data Sources
-# @st.cache(ttl=10800)
+@st.cache(ttl=600)
 def get_data(data_sector, data_type):
     if data_sector == 'Transactions':
         if data_type == 'Overview':
