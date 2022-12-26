@@ -10,7 +10,7 @@ theme_plotly = None # None or streamlit
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 # Layout
-st.set_page_config(page_title='Maro - Cross Chain Monitoring', page_icon=':bar_chart:', layout='wide')
+st.set_page_config(page_title='Macro - Cross Chain Monitoring', page_icon=':bar_chart:', layout='wide')
 st.title('🌍 Macro KPIs')
 
 # Style
