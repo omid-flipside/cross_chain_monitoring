@@ -86,18 +86,19 @@ elif len(options) == 1:
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
     st.subheader('Activity Heatmap')
+    df = transactions_heatmap.query('Blockchain == @options')
 
-    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Transactions', histfunc='avg', title='Heatmap of Transactions', nbinsx=24)
+    fig = px.density_heatmap(df, x='Hour', y='Day', z='Transactions', histfunc='avg', title='Heatmap of Transactions', nbinsx=24)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Transactions'))
     fig.update_yaxes(categoryorder='array', categoryarray=week_days)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Users', histfunc='avg', title='Heatmap of Active Addresses', nbinsx=24)
+    fig = px.density_heatmap(df, x='Hour', y='Day', z='Users', histfunc='avg', title='Heatmap of Active Addresses', nbinsx=24)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Users'))
     fig.update_yaxes(categoryorder='array', categoryarray=week_days)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Blocks', histfunc='avg', title='Heatmap of Blocks', nbinsx=24)
+    fig = px.density_heatmap(df, x='Hour', y='Day', z='Blocks', histfunc='avg', title='Heatmap of Blocks', nbinsx=24)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Blocks'))
     fig.update_yaxes(categoryorder='array', categoryarray=week_days)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
@@ -105,7 +106,7 @@ elif len(options) == 1:
 # Cross Chain Comparison
 else:
     st.subheader('Overview')
-    df = transactions_overview.query("Blockchain == @options")
+    df = transactions_overview.query('Blockchain == @options')
     c1, c2 = st.columns(2)
     with c1:
         fig = px.bar(df, x='Blockchain', y='Transactions', color='Blockchain', title='Total Transactions', log_y=True)
@@ -125,7 +126,7 @@ else:
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
     st.subheader('Activity Over Time')
-    df = transactions_daily.query("Blockchain == @options")
+    df = transactions_daily.query('Blockchain == @options')
 
     fig = px.line(df, x='Date', y='Transactions', color='Blockchain', title='Daily Total Transactions', log_y=True)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Transactions')
@@ -143,7 +144,7 @@ else:
 
     c1, c2 = st.columns(2)
     with c1:
-        df = transactions_heatmap.query("Blockchain == @options")
+        df = transactions_heatmap.query('Blockchain == @options')
         df['Transactions'] = df.groupby('Blockchain')['Transactions'].transform(lambda x: (x - x.min()) / (x.max() - x.min()))
         fig = px.density_heatmap(df, x='Blockchain', y='Day', z='Transactions', histfunc='avg', title='Daily Heatmap of Normalized Transactions')
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, coloraxis_colorbar=dict(title='Min/Max'))
@@ -151,7 +152,7 @@ else:
         fig.update_yaxes(categoryorder='array', categoryarray=week_days)
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
         
-        df = transactions_heatmap.query("Blockchain == @options")
+        df = transactions_heatmap.query('Blockchain == @options')
         df['Users'] = df.groupby('Blockchain')['Users'].transform(lambda x: (x - x.min()) / (x.max() - x.min()))
         fig = px.density_heatmap(df, x='Blockchain', y='Day', z='Users', histfunc='avg', title='Daily Heatmap of Normalized Users')
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, coloraxis_colorbar=dict(title='Min/Max'))
@@ -159,7 +160,7 @@ else:
         fig.update_yaxes(categoryorder='array', categoryarray=week_days)
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
         
-        df = transactions_heatmap.query("Blockchain == @options")
+        df = transactions_heatmap.query('Blockchain == @options')
         df['Blocks'] = df.groupby('Blockchain')['Blocks'].transform(lambda x: (x - x.min()) / (x.max() - x.min()))
         fig = px.density_heatmap(df, x='Blockchain', y='Day', z='Blocks', histfunc='avg', title='Daily Heatmap of Normalized Blocks')
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, coloraxis_colorbar=dict(title='Min/Max'))
@@ -167,7 +168,7 @@ else:
         fig.update_yaxes(categoryorder='array', categoryarray=week_days)
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
     with c2:
-        df = transactions_heatmap.query("Blockchain == @options")
+        df = transactions_heatmap.query('Blockchain == @options')
         df['Transactions'] = df.groupby('Blockchain')['Transactions'].transform(lambda x: (x - x.min()) / (x.max() - x.min()))
         fig = px.density_heatmap(df, x='Blockchain', y='Hour', z='Transactions', histfunc='avg', title='Hourly Heatmap of Normalized Transactions', nbinsy=24)
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, coloraxis_colorbar=dict(title='Min/Max'))
@@ -175,7 +176,7 @@ else:
         fig.update_yaxes(categoryorder='array', categoryarray=week_days, dtick=2)
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
         
-        df = transactions_heatmap.query("Blockchain == @options")
+        df = transactions_heatmap.query('Blockchain == @options')
         df['Users'] = df.groupby('Blockchain')['Users'].transform(lambda x: (x - x.min()) / (x.max() - x.min()))
         fig = px.density_heatmap(df, x='Blockchain', y='Hour', z='Users', histfunc='avg', title='Hourly Heatmap of Normalized Users', nbinsy=24)
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, coloraxis_colorbar=dict(title='Min/Max'))
@@ -183,7 +184,7 @@ else:
         fig.update_yaxes(categoryorder='array', categoryarray=week_days, dtick=2)
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
         
-        df = transactions_heatmap.query("Blockchain == @options")
+        df = transactions_heatmap.query('Blockchain == @options')
         df['Blocks'] = df.groupby('Blockchain')['Blocks'].transform(lambda x: (x - x.min()) / (x.max() - x.min()))
         fig = px.density_heatmap(df, x='Blockchain', y='Hour', z='Blocks', histfunc='avg', title='Hourly Heatmap of Normalized Blocks', nbinsy=24)
         fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, coloraxis_colorbar=dict(title='Min/Max'))
