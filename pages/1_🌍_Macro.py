@@ -92,13 +92,13 @@ elif len(options) == 1:
     fig.update_yaxes(categoryorder='array', categoryarray=week_days)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Blocks', histfunc='avg', title='Heatmap of Blocks', nbinsx=24)
-    fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Blocks'))
+    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Users', histfunc='avg', title='Heatmap of Active Addresses', nbinsx=24)
+    fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Users'))
     fig.update_yaxes(categoryorder='array', categoryarray=week_days)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Users', histfunc='avg', title='Heatmap of Active Addresses', nbinsx=24)
-    fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Users'))
+    fig = px.density_heatmap(transactions_heatmap, x='Hour', y='Day', z='Blocks', histfunc='avg', title='Heatmap of Blocks', nbinsx=24)
+    fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Blocks'))
     fig.update_yaxes(categoryorder='array', categoryarray=week_days)
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
@@ -131,20 +131,12 @@ else:
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Transactions')
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    fig = px.line(df, x='Date', y='TPS', color='Blockchain', title='Daily Average TPS', log_y=True)
-    fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Transactions/Second')
-    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
-
     fig = px.line(df, x='Date', y='Users', color='Blockchain', title='Daily Active Addresses', log_y=True)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Users')
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
-
+    
     fig = px.line(df, x='Date', y='Blocks', color='Blockchain', title='Daily Blocks', log_y=True)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Blocks')
-    st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
-
-    fig = px.line(df, x='Date', y='Transactions/Block', color='Blockchain', title='Daily Average Transactions/Block', log_y=True)
-    fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Transactions/Block')
     st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
     st.subheader('Activity Heatmap')
