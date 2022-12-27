@@ -53,13 +53,13 @@ elif len(options) == 1:
     df = transactions_overview.query("Blockchain == @options")
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric(label='**Total Transaction Fees**', value=str(transactions_overview['Fees'].map('{:,.0f}'.format).values[0]), help='USD')
+        st.metric(label='**Total Transaction Fees**', value=str(df['Fees'].map('{:,.0f}'.format).values[0]), help='USD')
     with c2:
-        st.metric(label='**Average Fee Amount**', value=str(transactions_overview['FeeAverage'].map('{:,.4f}'.format).values[0]), help='USD')
+        st.metric(label='**Average Fee Amount**', value=str(df['FeeAverage'].map('{:,.4f}'.format).values[0]), help='USD')
     with c3:
-        st.metric(label='**Median Fee Amount**', value=str(transactions_overview['FeeMedian'].map('{:,.4f}'.format).values[0]), help='USD')
+        st.metric(label='**Median Fee Amount**', value=str(df['FeeMedian'].map('{:,.4f}'.format).values[0]), help='USD')
     with c4:
-        st.metric(label='**Average Fees/Block**', value=str(transactions_overview['Fees/Block'].map('{:,.4f}'.format).values[0]), help='USD')
+        st.metric(label='**Average Fees/Block**', value=str(df['Fees/Block'].map('{:,.4f}'.format).values[0]), help='USD')
     
     st.subheader('Activity Over Time')
     df = transactions_daily.query("Blockchain == @options")

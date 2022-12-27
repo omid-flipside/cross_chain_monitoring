@@ -56,29 +56,29 @@ if len(options) == 0:
 # Single chain Analysis
 elif len(options) == 1:
     st.subheader('Overview')
-    df = transfers_overview.query("Blockchain == @options")
+    df = transfers_overview.query('Blockchain == @options')
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.metric(label='**Total Transferred Volume**', value=str(transfers_overview['Volume'].map('{:,.0f}'.format).values[0]), help='USD')
-        st.metric(label='**Average Transferred Volume/Day**', value=str(transfers_overview['Volume/Day'].map('{:,.0f}'.format).values[0]), help='USD')
+        st.metric(label='**Total Transferred Volume**', value=str(df['Volume'].map('{:,.0f}'.format).values[0]), help='USD')
+        st.metric(label='**Average Transferred Volume/Day**', value=str(df['Volume/Day'].map('{:,.0f}'.format).values[0]), help='USD')
     with c2:
-        st.metric(label='**Total Transfers**', value=str(transfers_overview['Transfers'].map('{:,.0f}'.format).values[0]))
-        st.metric(label='**Average Transfers/Day**', value=str(transfers_overview['Transfers/Day'].map('{:,.0f}'.format).values[0]))
+        st.metric(label='**Total Transfers**', value=str(df['Transfers'].map('{:,.0f}'.format).values[0]))
+        st.metric(label='**Average Transfers/Day**', value=str(df['Transfers/Day'].map('{:,.0f}'.format).values[0]))
     with c3:
-        st.metric(label='**Total Transferring Users**', value=str(transfers_overview['Users'].map('{:,.0f}'.format).values[0]))
-        st.metric(label='**Average Transferring Users/Day**', value=str(transfers_overview['Users/Day'].map('{:,.0f}'.format).values[0]))
+        st.metric(label='**Total Transferring Users**', value=str(df['Users'].map('{:,.0f}'.format).values[0]))
+        st.metric(label='**Average Transferring Users/Day**', value=str(df['Users/Day'].map('{:,.0f}'.format).values[0]))
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric(label='**Average Transferred Amount**', value=str(transfers_overview['AmountAverage'].map('{:,.0f}'.format).values[0]), help='USD')
+        st.metric(label='**Average Transferred Amount**', value=str(df['AmountAverage'].map('{:,.0f}'.format).values[0]), help='USD')
     with c2:
-        st.metric(label='**Median Transferred Amount**', value=str(transfers_overview['AmountMedian'].map('{:,.2f}'.format).values[0]), help='USD')
+        st.metric(label='**Median Transferred Amount**', value=str(df['AmountMedian'].map('{:,.2f}'.format).values[0]), help='USD')
     with c3:
-        st.metric(label='**Average Volume/User**', value=str(transfers_overview['Volume/User'].map('{:,.0f}'.format).values[0]), help='USD')
+        st.metric(label='**Average Volume/User**', value=str(df['Volume/User'].map('{:,.0f}'.format).values[0]), help='USD')
     with c4:
-        st.metric(label='**Average Transfers/User**', value=str(transfers_overview['Transfers/User'].map('{:,.0f}'.format).values[0]))
+        st.metric(label='**Average Transfers/User**', value=str(df['Transfers/User'].map('{:,.0f}'.format).values[0]))
     
     st.subheader('Transferred Amount Distribution')
-    df = transfers_distribution.query("Blockchain == @options")
+    df = transfers_distribution.query('Blockchain == @options')
     c1, c2, c3 = st.columns(3)
     with c1:
         fig = px.pie(df, values='Volume', names='Bucket', title='Share of Total Transferred Volume')
@@ -107,7 +107,7 @@ elif len(options) == 1:
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
     
     st.subheader('Activity Over Time')
-    df = transfers_daily.query("Blockchain == @options")
+    df = transfers_daily.query('Blockchain == @options')
 
     fig = px.area(df, x='Date', y='Volume', title='Daily Transferred Volume')
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title='Volume [USD]')
@@ -132,7 +132,7 @@ elif len(options) == 1:
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
     st.subheader('Activity Heatmap')
-    df = transfers_heatmap.query("Blockchain == @options")
+    df = transfers_heatmap.query('Blockchain == @options')
 
     fig = px.density_heatmap(df, x='Hour', y='Day', z='Volume', histfunc='avg', title='Heatmap of Transferred Volume', nbinsx=24)
     fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None, xaxis={'dtick': 1}, coloraxis_colorbar=dict(title='Volume [USD]'))
@@ -179,7 +179,7 @@ elif len(options) == 1:
         fig.update_traces(textinfo='percent+label', textposition='inside')
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
 
-    df = transfers_transferring_users.query("Blockchain == @options")
+    df = transfers_transferring_users.query('Blockchain == @options')
     c1, c2 = st.columns(2)
     with c1:
         fig = px.bar(df, x='User', y='Transfers', color='User', title='Total Transfers By Top Transferring Users', log_y=True)
@@ -198,7 +198,7 @@ else:
 
     with subtab_overview:
         st.subheader('Overview')
-        df = transfers_overview.query("Blockchain == @options")
+        df = transfers_overview.query('Blockchain == @options')
         c1, c2, c3 = st.columns(3)
         with c1:
             fig = px.bar(df, x='Blockchain', y='Volume', color='Blockchain', title='Total Transferred Volume', log_y=True)
@@ -241,7 +241,7 @@ else:
             st.plotly_chart(fig, use_container_width=True)
 
         st.subheader('Transfers Over Time')
-        df = transfers_daily.query("Blockchain == @options")
+        df = transfers_daily.query('Blockchain == @options')
         c1, c2 = st.columns(2)
         with c1:
             fig = px.line(df, x='Date', y='Volume', color='Blockchain', title='Daily Transferred Volume', log_y=True)
@@ -299,7 +299,7 @@ else:
         st.subheader("Transferred Amount")
         c1, c2 = st.columns([1, 2])
         with c1:
-            df = transfers_overview.query("Blockchain == @options")
+            df = transfers_overview.query('Blockchain == @options')
 
             fig = px.bar(transfers_overview, x='Blockchain', y='AmountAverage', color='Blockchain', title='Average Transferred Amount', log_y=True)
             fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
@@ -310,7 +310,7 @@ else:
             st.plotly_chart(fig, use_container_width=True)
         
         with c2:
-            df = transfers_daily.query("Blockchain == @options")
+            df = transfers_daily.query('Blockchain == @options')
 
             fig = px.line(df, x='Date', y='AmountAverage', color='Blockchain', title='Daily Average Transferred Amount')
             fig.update_layout(legend_title=None, xaxis_title=None, yaxis_title=None)
@@ -360,7 +360,7 @@ else:
     with subtab_distribution:
         st.subheader('Transferred Amount Size Distribution')
         c1, c2 = st.columns(2)
-        df = transfers_distribution.query("Blockchain == @options").sort_values(['Blockchain', 'Bucket'])
+        df = transfers_distribution.query('Blockchain == @options').sort_values(['Blockchain', 'Bucket'])
         with c1:
             fig = px.bar(df, x='Blockchain', y='Volume', color='Bucket', title='Total Transferred Volume of Each Group')
             fig.update_layout(xaxis_title=None, yaxis_title=None, xaxis={'categoryorder':'category ascending'})
