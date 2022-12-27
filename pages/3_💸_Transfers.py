@@ -69,7 +69,7 @@ elif len(options) == 1:
         st.metric(label='**Average Transferring Users/Day**', value=str(transfers_overview['Users/Day'].map('{:,.0f}'.format).values[0]))
     c1, c2, c3, c4 = st.columns(4)
     with c1:
-        st.metric(label='**Average Transferred Amount**', value=str(transfers_overview['AmountAverage'].map('{:,.2f}'.format).values[0]), help='USD')
+        st.metric(label='**Average Transferred Amount**', value=str(transfers_overview['AmountAverage'].map('{:,.0f}'.format).values[0]), help='USD')
     with c2:
         st.metric(label='**Median Transferred Amount**', value=str(transfers_overview['AmountMedian'].map('{:,.2f}'.format).values[0]), help='USD')
     with c3:
@@ -182,12 +182,12 @@ elif len(options) == 1:
     df = transfers_transferring_users.query("Blockchain == @options")
     c1, c2 = st.columns(2)
     with c1:
-        fig = px.bar(df, x='User', y='Transfers', color='User', title='Total Transfers By Top Transferring Users')
+        fig = px.bar(df, x='User', y='Transfers', color='User', title='Total Transfers By Top Transferring Users', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title='Transfers', xaxis={'categoryorder':'total ascending'})
         fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
     with c2:
-        fig = px.bar(df, x='User', y='Volume', color='User', title='Total Transferred Volume By Top Transferring Users')
+        fig = px.bar(df, x='User', y='Volume', color='User', title='Total Transferred Volume By Top Transferring Users', log_y=True)
         fig.update_layout(showlegend=False, xaxis_title=None, yaxis_title='Volume [USD]', xaxis={'categoryorder':'total ascending'})
         fig.update_xaxes(type='category')
         st.plotly_chart(fig, use_container_width=True, theme=theme_plotly)
