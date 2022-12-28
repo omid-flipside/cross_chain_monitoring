@@ -4,7 +4,7 @@ from PIL import Image
 
 # Layout
 st.set_page_config(page_title='optimism megadash', page_icon=':bar_chart:', layout='wide')
-st.title('Cross Chain Monitoring Tool')
+st.title('optimism megadash')
 
 # Content
 c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15 = st.columns(15)
