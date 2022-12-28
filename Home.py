@@ -3,7 +3,7 @@ import streamlit as st
 from PIL import Image
 
 # Layout
-st.set_page_config(page_title='Cross Chain Monitoring Tool', page_icon=':bar_chart:', layout='wide')
+st.set_page_config(page_title='optimism megadash', page_icon=':bar_chart:', layout='wide')
 st.title('Cross Chain Monitoring Tool')
 
 # Content
